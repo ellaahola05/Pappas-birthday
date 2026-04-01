@@ -436,6 +436,180 @@ html, body {
   display: none;
 }
 
+/* ─── Headlight Opening ────────────────────────────────────── */
+.headlight-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 1.2s ease;
+}
+
+.headlight-overlay.fade-out {
+  opacity: 0;
+}
+
+.headlight-scene {
+  position: relative;
+  width: 320px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 140px;
+}
+
+/* Round headlights */
+.headlight {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  transition: background 0.3s, box-shadow 0.6s;
+  position: relative;
+  z-index: 2;
+}
+
+.headlight.on {
+  background: #fff8e7;
+  box-shadow:
+    0 0 20px 8px rgba(255, 240, 180, 0.8),
+    0 0 60px 20px rgba(255, 220, 120, 0.4),
+    0 0 120px 40px rgba(255, 200, 80, 0.15);
+  animation: headlightFlicker 0.4s ease 0s 1;
+}
+
+@keyframes headlightFlicker {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  35%  { opacity: 0.3; }
+  50%  { opacity: 1; }
+  65%  { opacity: 0.6; }
+  80%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Light beams */
+.headlight-beam {
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  transition: opacity 1s ease 0.5s;
+  pointer-events: none;
+}
+
+.left-beam {
+  left: 50px;
+  border-top: 55px solid transparent;
+  border-bottom: 55px solid transparent;
+  border-right: 260px solid rgba(255, 240, 180, 0.04);
+  transform: translateY(-50%);
+}
+
+.right-beam {
+  right: 50px;
+  border-top: 55px solid transparent;
+  border-bottom: 55px solid transparent;
+  border-left: 260px solid rgba(255, 240, 180, 0.04);
+  transform: translateY(-50%);
+}
+
+.headlight-beam.on {
+  opacity: 1;
+}
+
+/* "Öppna" prompt */
+.open-prompt {
+  margin-top: 4rem;
+  opacity: 0;
+  transition: opacity 1s ease;
+  text-align: center;
+}
+
+.open-prompt.visible {
+  opacity: 1;
+}
+
+.open-prompt span {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+  color: var(--muted);
+  text-transform: uppercase;
+  animation: pulse 2.5s ease infinite;
+}
+
+/* ─── Music Player ─────────────────────────────────────────── */
+.music-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  border-top: 1px solid var(--border);
+  padding: 0 1.5rem;
+  height: 60px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.music-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.music-title {
+  font-size: 0.8rem;
+  color: var(--cream);
+  letter-spacing: 0.05em;
+}
+
+.music-artist {
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.music-toggle {
+  background: transparent;
+  border: none;
+  color: var(--amber);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.music-toggle:hover {
+  color: var(--gold);
+}
+
+.music-close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+
+.music-close:hover {
+  color: var(--cream);
+}
+
 /* ─── Utilities ────────────────────────────────────────────── */
 @keyframes fadeUp {
   from {
