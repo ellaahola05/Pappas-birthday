@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lägg till ett minne</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body class="submit-page">
+
+  <div class="submit-container">
+
+    <div class="submit-header">
+      <p class="date-label" style="margin-bottom: 1rem;">För Jonas · 09.04</p>
+      <h1>Ditt minne</h1>
+      <p>
+        Dela ett minne, en bild eller ett ord till Jonas födelsedag.
+        Det dyker upp i hans kort när han öppnar det. Skriv på vilket språk du vill.
+      </p>
+    </div>
+
+    <form id="memoryForm">
+
+      <div class="form-group">
+        <label for="nameInput">Ditt namn</label>
+        <input
+          type="text"
+          id="nameInput"
+          placeholder="Vad heter du?"
+          required
+          maxlength="60"
+        />
+      </div>
+
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label for="messageInput">Ditt minne eller meddelande</label>
+        <textarea
+          id="messageInput"
+          rows="5"
+          placeholder="Berätta något..."
+          required
+          maxlength="800"
+        ></textarea>
+      </div>
+
+      <div class="form-group photo-upload" style="margin-top: 1.5rem;">
+        <label>Foto (valfritt)</label>
+        <label class="photo-label-btn" for="photoInput">Välj ett foto</label>
+        <input type="file" id="photoInput" accept="image/*" style="display:none;" />
+        <img class="photo-preview" id="photoPreview" alt="Förhandsgranskning" />
+        <p id="photoName" style="font-size:0.75rem; color: var(--muted); margin-top: 0.25rem;"></p>
+      </div>
+
+      <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+        <button type="submit" class="submit-btn" id="submitBtn">Skicka minne</button>
+        <p class="success-msg" id="successMsg">
+          Tack! Ditt minne är sparat. Jonas kommer att se det på sin födelsedag.
+        </p>
+        <p class="success-msg" id="errorMsg" style="color: #c0392b;">
+          Något gick fel. Försök igen.
+        </p>
+      </div>
+
+    </form>
+
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBaBMruVNGIE09Kumg0reFDWtao8i4Dk40",
+      authDomain: "pappas-birthday.firebaseapp.com",
+      projectId: "pappas-birthday",
+      storageBucket: "pappas-birthday.firebasestorage.app",
+      messagingSenderId: "223073240934",
+      appId: "1:223073240934:web:f3e7cf983b9900520e2aa7"
+    };
+
+    const CLOUDINARY_CLOUD = 'dgmw7jpjd';
+    const CLOUDINARY_PRESET = 'jonas_memories';
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Photo preview
+    document.getElementById('photoInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const preview = document.getElementById('photoPreview');
+      const nameEl = document.getElementById('photoName');
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+      nameEl.textContent = file.name;
+    });
+
+    async function uploadToCloudinary(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!res.ok) throw new Error('Cloudinary upload failed');
+      const data = await res.json();
+      return data.secure_url;
+    }
+
+    // Form submit
+    document.getElementById('memoryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      const successMsg = document.getElementById('successMsg');
+      const errorMsg = document.getElementById('errorMsg');
+
+      const name = document.getElementById('nameInput').value.trim();
+      const message = document.getElementById('messageInput').value.trim();
+      const photoFile = document.getElementById('photoInput').files[0];
+
+      if (!name || !message) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Sparar...';
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      try {
+        let photoUrl = null;
+
+        if (photoFile) {
+          photoUrl = await uploadToCloudinary(photoFile);
+        }
+
+        await addDoc(collection(db, 'memories'), {
+          name,
+          message,
+          photoUrl,
+          timestamp: serverTimestamp()
+        });
+
+        successMsg.style.display = 'block';
+        document.getElementById('memoryForm').reset();
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('photoName').textContent = '';
+        btn.textContent = 'Skickat ✓';
+
+      } catch (err) {
+        console.error(err);
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Skicka minne';
+      }
+    });
+  </script>
+
+</body>
+</html>

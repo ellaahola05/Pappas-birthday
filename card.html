@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grattis Jonas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+</head>
+<body class="card-page">
+
+  <!-- Opening -->
+  <section class="opening-section">
+    <p class="date-label">09 . 04</p>
+    <h1 class="opening-title">Grattis<br/>Pappa</h1>
+    <p class="opening-subtitle">Ett år äldre &nbsp;·&nbsp; Aldrig tråkigare</p>
+    <p class="scroll-hint">Scroll</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Birthday message -->
+  <section class="section">
+    <p class="section-label">Ett meddelande</p>
+    <p class="message-text">
+      <!-- Edit this message to something personal! -->
+      Det finns människor som gör livet rikare bara genom att finnas i det.
+      Du är en av dem, Pappa. <em>Tack för allt du är.</em>
+      <br/><br/>
+      Idag har vi samlat minnen och ord från dem som älskar dig mest.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Memory wall -->
+  <section class="section">
+    <p class="section-label">Minnen</p>
+    <div class="memory-grid" id="memoryGrid">
+      <p class="memory-empty">Laddar minnen...</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Footer -->
+  <section class="section" style="text-align: center; padding-bottom: 6rem;">
+    <p class="date-label" style="margin-bottom: 1.5rem;">09 . 04</p>
+    <h2 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: var(--cream);">Jonas</h2>
+    <p style="margin-top: 1rem; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.2em;">Med kärlek</p>
+  </section>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBaBMruVNGIE09Kumg0reFDWtao8i4Dk40",
+      authDomain: "pappas-birthday.firebaseapp.com",
+      projectId: "pappas-birthday",
+      storageBucket: "pappas-birthday.firebasestorage.app",
+      messagingSenderId: "223073240934",
+      appId: "1:223073240934:web:f3e7cf983b9900520e2aa7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadMemories() {
+      const grid = document.getElementById('memoryGrid');
+
+      try {
+        const q = query(collection(db, 'memories'), orderBy('timestamp', 'asc'));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          grid.innerHTML = '<p class="memory-empty">Inga minnen ännu.</p>';
+          return;
+        }
+
+        grid.innerHTML = '';
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const card = document.createElement('div');
+          card.className = 'memory-card';
+
+          let imgHtml = '';
+          if (data.photoUrl) {
+            imgHtml = `<img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />`;
+          }
+
+          card.innerHTML = `
+            ${imgHtml}
+            <p class="memory-author">${data.name}</p>
+            <p class="memory-text">${data.message}</p>
+          `;
+
+          grid.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error('Could not load memories:', err);
+        grid.innerHTML = '<p class="memory-empty">Kunde inte ladda minnen.</p>';
+      }
+    }
+
+    loadMemories();
+  </script>
+
+</body>
+</html>

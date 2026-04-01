@@ -1,0 +1,460 @@
+/* ─── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black:   #0a0a0a;
+  --dark:    #111111;
+  --card-bg: #161616;
+  --border:  #2a2a2a;
+  --cream:   #f0ece4;
+  --muted:   #7a7570;
+  --amber:   #c8922a;
+  --gold:    #d4a843;
+  --defender: #c9a84c; /* mustard yellow from the Defender */
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'Inter', Helvetica, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--black);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Password Page ────────────────────────────────────────── */
+.password-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.password-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+}
+
+.date-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.4em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.name-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 12vw, 7rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--cream);
+  line-height: 1;
+}
+
+.riddle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.riddle p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 280px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.input-group input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.input-group input::placeholder {
+  color: var(--border);
+  letter-spacing: 0.3em;
+}
+
+.input-group button {
+  background: transparent;
+  border: none;
+  color: var(--amber);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+  line-height: 1;
+}
+
+.input-group button:hover {
+  color: var(--gold);
+  transform: translateX(3px);
+}
+
+.error-msg {
+  font-size: 0.75rem;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Shake animation on wrong password */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-6px); }
+  75%       { transform: translateX(6px); }
+}
+
+.shake {
+  animation: shake 0.4s ease;
+}
+
+/* ─── Fade overlay (transition between pages) ──────────────── */
+.fade-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  z-index: 100;
+}
+
+.fade-overlay.fade-in {
+  opacity: 1;
+}
+
+/* ─── Card Page ────────────────────────────────────────────── */
+.card-page {
+  min-height: 100vh;
+  padding: 0;
+  opacity: 0;
+  animation: pageReveal 1.5s ease 0.3s forwards;
+}
+
+@keyframes pageReveal {
+  to { opacity: 1; }
+}
+
+/* Opening section */
+.opening-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.opening-section .date-label {
+  animation: fadeUp 1s ease 0.5s both;
+}
+
+.opening-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 10vw, 6rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.1;
+  animation: fadeUp 1s ease 0.8s both;
+}
+
+.opening-subtitle {
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  animation: fadeUp 1s ease 1.1s both;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--border);
+  text-transform: uppercase;
+  animation: fadeUp 1s ease 2s both, pulse 3s ease 3s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.8; }
+}
+
+/* ─── Section layout ───────────────────────────────────────── */
+.section {
+  padding: 5rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+/* ─── Birthday message ─────────────────────────────────────── */
+.message-text {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--cream);
+}
+
+.message-text em {
+  color: var(--amber);
+  font-style: italic;
+}
+
+/* ─── Memory wall ──────────────────────────────────────────── */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.memory-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.3s;
+}
+
+.memory-card:hover {
+  border-color: var(--amber);
+}
+
+.memory-card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%);
+}
+
+.memory-author {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--amber);
+  text-transform: uppercase;
+}
+
+.memory-text {
+  font-size: 0.95rem;
+  color: var(--cream);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.memory-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+/* ─── Divider ──────────────────────────────────────────────── */
+.divider {
+  width: 1px;
+  height: 80px;
+  background: var(--border);
+  margin: 0 auto;
+}
+
+/* ─── Submit Page ──────────────────────────────────────────── */
+.submit-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.submit-container {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.submit-header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.75rem;
+}
+
+.submit-header p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--amber);
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group textarea {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 300;
+  padding: 0.85rem 1rem;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--amber);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--muted);
+}
+
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.photo-label-btn {
+  display: inline-block;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.photo-label-btn:hover {
+  border-color: var(--amber);
+  color: var(--cream);
+}
+
+.photo-preview {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: none;
+  filter: grayscale(20%);
+}
+
+.submit-btn {
+  background: transparent;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  align-self: flex-start;
+}
+
+.submit-btn:hover {
+  background: var(--amber);
+  color: var(--black);
+}
+
+.submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.success-msg {
+  font-size: 0.85rem;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+  display: none;
+}
+
+/* ─── Utilities ────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .memory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 3.5rem 1.5rem;
+  }
+}
