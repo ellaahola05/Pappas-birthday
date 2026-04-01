@@ -11,12 +11,10 @@
 
   <!-- Cinematic headlight opening -->
   <div class="headlight-overlay" id="headlightOverlay">
-    <div class="headlight-scene">
-      <div class="headlight left" id="headlightLeft"></div>
-      <div class="headlight right" id="headlightRight"></div>
-      <div class="headlight-beam left-beam" id="beamLeft"></div>
-      <div class="headlight-beam right-beam" id="beamRight"></div>
-    </div>
+    <img id="porscheImg" src="porsche.jpg" class="headlight-photo-img" />
+    <div class="headlight-dark" id="headlightDark"></div>
+    <div class="headlight-glow" id="glowLeft"></div>
+    <div class="headlight-glow" id="glowRight"></div>
     <div class="open-prompt" id="openPrompt">
       <span>Öppna</span>
     </div>
@@ -71,6 +69,7 @@
       <span class="music-artist">Belinda Carlisle</span>
     </div>
     <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">❚❚</button>
+    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" oninput="document.getElementById('audioPlayer').volume = this.value" />
     <button class="music-close" onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
   </div>
 
@@ -78,18 +77,58 @@
     const overlay = document.getElementById('headlightOverlay');
     const prompt = document.getElementById('openPrompt');
 
-    // Step 1: headlights flicker on after 1s
-    setTimeout(() => {
-      document.getElementById('headlightLeft').classList.add('on');
-      document.getElementById('headlightRight').classList.add('on');
-      document.getElementById('beamLeft').classList.add('on');
-      document.getElementById('beamRight').classList.add('on');
-    }, 1000);
+    // Headlight positions as fraction of original image
+    const LEFT_X = 0.38, RIGHT_X = 0.62, HEADLIGHT_Y = 0.84;
 
-    // Step 2: show "Öppna" prompt after lights are on
+function positionGlows() {
+      const img = document.getElementById('porscheImg');
+      if (!img.naturalWidth) return;
+
+      // Calculate where the image actually renders with object-fit: cover, object-position: center 80%
+      const scaleW = img.clientWidth  / img.naturalWidth;
+      const scaleH = img.clientHeight / img.naturalHeight;
+      const scale  = Math.max(scaleW, scaleH);
+      const rW = img.naturalWidth  * scale;
+      const rH = img.naturalHeight * scale;
+      const offsetX = (img.clientWidth  - rW) / 2;
+      const offsetY = (img.clientHeight - rH) * 0.80; // matches object-position 80%
+
+      const leftGlow  = document.getElementById('glowLeft');
+      const rightGlow = document.getElementById('glowRight');
+
+      leftGlow.style.left  = (offsetX + rW * LEFT_X)      + 'px';
+      leftGlow.style.top   = (offsetY + rH * HEADLIGHT_Y) + 'px';
+      rightGlow.style.left = (offsetX + rW * RIGHT_X)     + 'px';
+      rightGlow.style.top  = (offsetY + rH * HEADLIGHT_Y) + 'px';
+    }
+
+    window.addEventListener('resize', positionGlows);
+
+    const img = document.getElementById('porscheImg');
+    img.addEventListener('load', positionGlows);
+    if (img.complete) positionGlows();
+
+    // Step 1: silhouette fades in
+    setTimeout(() => {
+      document.getElementById('porscheImg').classList.add('on');
+    }, 400);
+
+    // Step 2: dark overlay lifts slightly
+    setTimeout(() => {
+      document.getElementById('headlightDark').classList.add('lift');
+    }, 600);
+
+    // Step 3: headlight glows flicker on
+    setTimeout(() => {
+      positionGlows();
+      document.getElementById('glowLeft').classList.add('on');
+      document.getElementById('glowRight').classList.add('on');
+    }, 1800);
+
+    // Step 4: show "Öppna"
     setTimeout(() => {
       prompt.classList.add('visible');
-    }, 2800);
+    }, 3200);
 
     // Step 3: click anywhere on overlay to open
     overlay.addEventListener('click', () => {
