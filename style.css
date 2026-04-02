@@ -334,7 +334,7 @@ html, body {
 .speedometer-section {
   display: flex;
   justify-content: center;
-  padding-left: 6rem;
+  padding-left: 8rem;
 }
 
 .speedo-widget {
@@ -345,7 +345,7 @@ html, body {
 
 .speedo-meter {
   position: relative;
-  width: 260px;
+  width: 400px;
   flex-shrink: 0;
 }
 
@@ -355,11 +355,11 @@ html, body {
 
 .speedo-number {
   position: absolute;
-  bottom: 18px;
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-sans);
-  font-size: 2rem;
+  font-size: 2.8rem;
   font-weight: 400;
   color: var(--cream);
   letter-spacing: 0.05em;
@@ -368,10 +368,10 @@ html, body {
 
 .speedo-unit {
   position: absolute;
-  bottom: 4px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: 0.3em;
   color: var(--muted);
   text-transform: uppercase;
@@ -379,6 +379,7 @@ html, body {
 
 .speedo-text {
   max-width: 220px;
+  padding-left: 2rem;
 }
 
 .speedo-msg {
@@ -407,7 +408,7 @@ html, body {
   height: 260px;
   border-radius: 50%;
   top: 50%;
-  right: -60px;
+  right: -180px;
   transform: translateY(-50%);
   background: radial-gradient(circle, #fff 0%, #fff 15%, rgba(255,255,255,0.9) 35%, rgba(255,255,255,0.4) 60%, transparent 80%);
   opacity: 0;

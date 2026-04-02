@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grattis Jonas</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap"
+    rel="stylesheet" />
 </head>
+
 <body class="card-page">
 
   <!-- Cinematic headlight opening -->
@@ -35,7 +39,7 @@
   <!-- Opening -->
   <section class="opening-section">
     <p class="date-label">09 . 04</p>
-    <h1 class="opening-title">Grattis<br/>Pappa</h1>
+    <h1 class="opening-title">Grattis<br />Pappa</h1>
     <p class="opening-subtitle">Ett år äldre &nbsp;·&nbsp; Aldrig tråkigare</p>
     <p class="scroll-hint">Scroll</p>
   </section>
@@ -47,7 +51,7 @@
     <div class="speedo-flash" id="speedoFlash"></div>
     <div class="speedo-widget">
       <div class="speedo-meter">
-        <canvas id="speedoCanvas" width="260" height="160"></canvas>
+        <canvas id="speedoCanvas" width="400" height="240"></canvas>
         <div class="speedo-number" id="speedoNumber">0</div>
         <div class="speedo-unit">år</div>
       </div>
@@ -61,12 +65,12 @@
 
   <!-- Birthday message -->
   <section class="section">
-    <p class="section-label">Ett meddelande</p>
+    <p class="section-label">TILL DIG</p>
     <p class="message-text">
       <!-- Edit this message to something personal! -->
       Det finns människor som gör livet rikare bara genom att finnas i det.
       Du är en av dem, Pappa. <em>Tack för allt du är.</em>
-      <br/><br/>
+      <br /><br />
       Idag har vi samlat minnen och ord från dem som älskar dig mest.
     </p>
   </section>
@@ -97,8 +101,8 @@
   <!-- Footer -->
   <section class="section" style="text-align: center; padding-bottom: 6rem;">
     <p class="date-label" style="margin-bottom: 1.5rem;">09 . 04</p>
-    <h2 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: var(--cream);">Jonas</h2>
-    <p style="margin-top: 1rem; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.2em;">Med kärlek</p>
+    <h2 style="font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: var(--cream);">Jonas 45 år</h2>
+    <p style="margin-top: 1rem; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.2em;">Älskar dig!</p>
   </section>
 
   <!-- Music player -->
@@ -109,8 +113,10 @@
       <span class="music-artist">Belinda Carlisle</span>
     </div>
     <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">❚❚</button>
-    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" oninput="document.getElementById('audioPlayer').volume = this.value" />
-    <button class="music-close" onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
+    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1"
+      oninput="document.getElementById('audioPlayer').volume = this.value" />
+    <button class="music-close"
+      onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
   </div>
 
   <script>
@@ -120,26 +126,26 @@
     // Headlight positions as fraction of original image
     const LEFT_X = 0.38, RIGHT_X = 0.62, HEADLIGHT_Y = 0.74;
 
-function positionGlows() {
+    function positionGlows() {
       const img = document.getElementById('porscheImg');
       if (!img.naturalWidth) return;
 
       // Calculate where the image actually renders with object-fit: cover, object-position: center 80%
-      const scaleW = img.clientWidth  / img.naturalWidth;
+      const scaleW = img.clientWidth / img.naturalWidth;
       const scaleH = img.clientHeight / img.naturalHeight;
-      const scale  = Math.max(scaleW, scaleH);
-      const rW = img.naturalWidth  * scale;
+      const scale = Math.max(scaleW, scaleH);
+      const rW = img.naturalWidth * scale;
       const rH = img.naturalHeight * scale;
-      const offsetX = (img.clientWidth  - rW) / 2;
+      const offsetX = (img.clientWidth - rW) / 2;
       const offsetY = (img.clientHeight - rH) * 0.80; // matches object-position 80%
 
-      const leftGlow  = document.getElementById('glowLeft');
+      const leftGlow = document.getElementById('glowLeft');
       const rightGlow = document.getElementById('glowRight');
 
-      leftGlow.style.left  = (offsetX + rW * LEFT_X)      + 'px';
-      leftGlow.style.top   = (offsetY + rH * HEADLIGHT_Y) + 'px';
-      rightGlow.style.left = (offsetX + rW * RIGHT_X)     + 'px';
-      rightGlow.style.top  = (offsetY + rH * HEADLIGHT_Y) + 'px';
+      leftGlow.style.left = (offsetX + rW * LEFT_X) + 'px';
+      leftGlow.style.top = (offsetY + rH * HEADLIGHT_Y) + 'px';
+      rightGlow.style.left = (offsetX + rW * RIGHT_X) + 'px';
+      rightGlow.style.top = (offsetY + rH * HEADLIGHT_Y) + 'px';
     }
 
     window.addEventListener('resize', positionGlows);
@@ -205,8 +211,8 @@ function positionGlows() {
     const canvas = document.getElementById('speedoCanvas');
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
-    const cx = W / 2, cy = H - 20;
-    const radius = 110;
+    const cx = W / 2, cy = H - 30;
+    const radius = 170;
 
     // Angle range: -180deg (left) to 0deg (right) = semicircle
     // 0 maps to -175deg, 45 maps to -5deg
@@ -244,7 +250,7 @@ function positionGlows() {
         if (isMajor) {
           const lx = cx + (radius - 26) * Math.cos(angle);
           const ly = cy + (radius - 26) * Math.sin(angle);
-          ctx.font = '11px Inter, sans-serif';
+          ctx.font = '14px Inter, sans-serif';
           ctx.fillStyle = v === 45 ? '#c8922a' : '#666';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -475,4 +481,5 @@ function positionGlows() {
   </script>
 
 </body>
+
 </html>

@@ -1,64 +1,59 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lägg till ett minne</title>
+  <title>Send a birthday message to Jonas</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap"
+    rel="stylesheet" />
 </head>
+
 <body class="submit-page">
 
   <div class="submit-container">
 
     <div class="submit-header">
-      <p class="date-label" style="margin-bottom: 1rem;">För Jonas · 09.04</p>
-      <h1>Ditt minne</h1>
+      <p class="date-label" style="margin-bottom: 1rem;">For Jonas · 09.04</p>
+      <Form></Form>
+      </p>
+      <h1>Birthday message</h1>
       <p>
-        Dela ett minne, en bild eller ett ord till Jonas födelsedag.
-        Det dyker upp i hans kort när han öppnar det. Skriv på vilket språk du vill.
+        Share a memory or birthday message for Jonas.
+        It will appear in his card when he opens it.
+        Write in any language you want.
       </p>
     </div>
 
     <form id="memoryForm">
 
       <div class="form-group">
-        <label for="nameInput">Ditt namn</label>
-        <input
-          type="text"
-          id="nameInput"
-          placeholder="Vad heter du?"
-          required
-          maxlength="60"
-        />
+        <label for="nameInput">Your name</label>
+        <input type="text" id="nameInput" placeholder="What's your name?" required maxlength="60" />
       </div>
 
       <div class="form-group" style="margin-top: 1.5rem;">
-        <label for="messageInput">Ditt minne eller meddelande</label>
-        <textarea
-          id="messageInput"
-          rows="5"
-          placeholder="Berätta något..."
-          required
-          maxlength="800"
-        ></textarea>
+        <label for="messageInput">Your memory or birthday message</label>
+        <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
       <div class="form-group photo-upload" style="margin-top: 1.5rem;">
-        <label>Foto (valfritt)</label>
-        <label class="photo-label-btn" for="photoInput">Välj ett foto</label>
+        <label>Photo (optional)</label>
+        <label class="photo-label-btn" for="photoInput">Choose a photo</label>
         <input type="file" id="photoInput" accept="image/*" style="display:none;" />
         <img class="photo-preview" id="photoPreview" alt="Förhandsgranskning" />
         <p id="photoName" style="font-size:0.75rem; color: var(--muted); margin-top: 0.25rem;"></p>
       </div>
 
       <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
-        <button type="submit" class="submit-btn" id="submitBtn">Skicka minne</button>
+        <button type="submit" class="submit-btn" id="submitBtn">Send message</button>
         <p class="success-msg" id="successMsg">
-          Tack! Ditt minne är sparat. Jonas kommer att se det på sin födelsedag.
+          Thank! Your message has been saved. Jonas will see it on his birthday.
         </p>
         <p class="success-msg" id="errorMsg" style="color: #c0392b;">
-          Något gick fel. Försök igen.
+          Something went wrong. Please try again.
         </p>
       </div>
 
@@ -160,4 +155,5 @@
   </script>
 
 </body>
+
 </html>
