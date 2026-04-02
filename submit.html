@@ -15,12 +15,19 @@
 
   <div class="submit-container">
 
+    <!-- Language switcher -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <span>·</span>
+      <button class="lang-btn" onclick="setLang('sv')">SV</button>
+      <span>·</span>
+      <button class="lang-btn" onclick="setLang('fi')">FI</button>
+    </div>
+
     <div class="submit-header">
-      <p class="date-label" style="margin-bottom: 1rem;">For Jonas · 09.04</p>
-      <Form></Form>
-      </p>
-      <h1>Birthday message</h1>
-      <p>
+      <p class="date-label" style="margin-bottom: 1rem;">För Jonas · 09.04</p>
+      <h1 id="t-title">Birthday message</h1>
+      <p id="t-desc">
         Share a memory or birthday message for Jonas.
         It will appear in his card when he opens it.
         Write in any language you want.
@@ -30,36 +37,105 @@
     <form id="memoryForm">
 
       <div class="form-group">
-        <label for="nameInput">Your name</label>
+        <label for="nameInput" id="t-name-label">Your name</label>
         <input type="text" id="nameInput" placeholder="What's your name?" required maxlength="60" />
       </div>
 
       <div class="form-group" style="margin-top: 1.5rem;">
-        <label for="messageInput">Your memory or birthday message</label>
+        <label for="messageInput" id="t-msg-label">Your memory or birthday message</label>
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
       <div class="form-group photo-upload" style="margin-top: 1.5rem;">
-        <label>Photo (optional)</label>
-        <label class="photo-label-btn" for="photoInput">Choose a photo</label>
+        <label id="t-photo-label">Photo (optional)</label>
+        <label class="photo-label-btn" for="photoInput" id="t-photo-btn">Choose a photo</label>
         <input type="file" id="photoInput" accept="image/*" style="display:none;" />
-        <img class="photo-preview" id="photoPreview" alt="Förhandsgranskning" />
+        <img class="photo-preview" id="photoPreview" alt="Preview" />
         <p id="photoName" style="font-size:0.75rem; color: var(--muted); margin-top: 0.25rem;"></p>
       </div>
 
       <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
         <button type="submit" class="submit-btn" id="submitBtn">Send message</button>
-        <p class="success-msg" id="successMsg">
-          Thank! Your message has been saved. Jonas will see it on his birthday.
-        </p>
-        <p class="success-msg" id="errorMsg" style="color: #c0392b;">
-          Something went wrong. Please try again.
-        </p>
+        <p class="success-msg" id="successMsg"></p>
+        <p class="success-msg" id="errorMsg" style="color: #c0392b;"></p>
       </div>
 
     </form>
 
   </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: 'Birthday message',
+        desc: 'Share a memory or birthday message for Jonas. It will appear in his card when he opens it. Write in any language you want.',
+        nameLbl: 'Your name',
+        namePh: "What's your name?",
+        msgLbl: 'Your memory or birthday message',
+        msgPh: 'Tell us something...',
+        photoLbl: 'Photo (optional)',
+        photoBtnLbl: 'Choose a photo',
+        submit: 'Send message',
+        saving: 'Saving...',
+        sent: 'Sent ✓',
+        success: 'Thank you! Your message has been saved. Jonas will see it on his birthday.',
+        error: 'Something went wrong. Please try again.'
+      },
+      sv: {
+        title: 'Ditt minne',
+        desc: 'Dela ett minne eller ett meddelande till Jonas. Det dyker upp i hans kort när han öppnar det. Skriv på vilket språk du vill.',
+        nameLbl: 'Ditt namn',
+        namePh: 'Vad heter du?',
+        msgLbl: 'Ditt minne eller meddelande',
+        msgPh: 'Berätta något...',
+        photoLbl: 'Foto (valfritt)',
+        photoBtnLbl: 'Välj ett foto',
+        submit: 'Skicka',
+        saving: 'Sparar...',
+        sent: 'Skickat ✓',
+        success: 'Tack! Ditt minne är sparat. Jonas ser det på sin födelsedag.',
+        error: 'Något gick fel. Försök igen.'
+      },
+      fi: {
+        title: 'Muistosi',
+        desc: 'Jaa muisto tai syntymäpäiväviesti Jonakselle. Se ilmestyy hänen korttiinsa kun hän avaa sen. Kirjoita millä kielellä haluat.',
+        nameLbl: 'Nimesi',
+        namePh: 'Mikä sinun nimesi on?',
+        msgLbl: 'Muistosi tai viestisi',
+        msgPh: 'Kerro jotain...',
+        photoLbl: 'Kuva (valinnainen)',
+        photoBtnLbl: 'Valitse kuva',
+        submit: 'Lähetä',
+        saving: 'Tallennetaan...',
+        sent: 'Lähetetty ✓',
+        success: 'Kiitos! Viestisi on tallennettu. Jonas näkee sen syntymäpäivänään.',
+        error: 'Jotain meni pieleen. Yritä uudelleen.'
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      document.getElementById('t-title').textContent = t.title;
+      document.getElementById('t-desc').textContent = t.desc;
+      document.getElementById('t-name-label').textContent = t.nameLbl;
+      document.getElementById('nameInput').placeholder = t.namePh;
+      document.getElementById('t-msg-label').textContent = t.msgLbl;
+      document.getElementById('messageInput').placeholder = t.msgPh;
+      document.getElementById('t-photo-label').textContent = t.photoLbl;
+      document.getElementById('t-photo-btn').textContent = t.photoBtnLbl;
+
+      const btn = document.getElementById('submitBtn');
+      if (!btn.disabled) btn.textContent = t.submit;
+
+      // Update active button
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+    }
+  </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -80,7 +156,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Photo preview
     document.getElementById('photoInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -106,10 +181,10 @@
       return data.secure_url;
     }
 
-    // Form submit
     document.getElementById('memoryForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
+      const t = window.translations[window.currentLang];
       const btn = document.getElementById('submitBtn');
       const successMsg = document.getElementById('successMsg');
       const errorMsg = document.getElementById('errorMsg');
@@ -121,36 +196,40 @@
       if (!name || !message) return;
 
       btn.disabled = true;
-      btn.textContent = 'Sparar...';
+      btn.textContent = t.saving;
       successMsg.style.display = 'none';
       errorMsg.style.display = 'none';
 
       try {
         let photoUrl = null;
-
-        if (photoFile) {
-          photoUrl = await uploadToCloudinary(photoFile);
-        }
+        if (photoFile) photoUrl = await uploadToCloudinary(photoFile);
 
         await addDoc(collection(db, 'memories'), {
-          name,
-          message,
-          photoUrl,
+          name, message, photoUrl,
           timestamp: serverTimestamp()
         });
 
+        successMsg.textContent = t.success;
         successMsg.style.display = 'block';
         document.getElementById('memoryForm').reset();
         document.getElementById('photoPreview').style.display = 'none';
         document.getElementById('photoName').textContent = '';
-        btn.textContent = 'Skickat ✓';
+        btn.textContent = t.sent;
 
       } catch (err) {
         console.error(err);
+        errorMsg.textContent = t.error;
         errorMsg.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'Skicka minne';
+        btn.textContent = translations[currentLang].submit;
       }
+    });
+
+    // Expose to window so the module script can access currentLang
+    window.translations = translations;
+    window.currentLang = 'en';
+    Object.defineProperty(window, 'currentLang', {
+      get: () => document.querySelector('.lang-btn.active')?.getAttribute('onclick')?.match(/'(\w+)'/)?.[1] || 'en'
     });
   </script>
 

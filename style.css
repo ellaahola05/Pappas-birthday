@@ -451,6 +451,39 @@ html, body {
   margin: 0 auto;
 }
 
+/* ─── Language Switcher ────────────────────────────────────── */
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.lang-switcher span {
+  color: var(--border);
+  font-size: 0.7rem;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.lang-btn:hover {
+  color: var(--cream);
+}
+
+.lang-btn.active {
+  color: var(--amber);
+}
+
 /* ─── Submit Page ──────────────────────────────────────────── */
 .submit-page {
   min-height: 100vh;
