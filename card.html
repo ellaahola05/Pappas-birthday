@@ -20,12 +20,41 @@
     </div>
   </div>
 
+  <!-- Lightbox for polaroid expand -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-card" onclick="event.stopPropagation()">
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-caption">
+        <p class="memory-author" id="lightboxAuthor"></p>
+        <p class="memory-text" id="lightboxText"></p>
+      </div>
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    </div>
+  </div>
+
   <!-- Opening -->
   <section class="opening-section">
     <p class="date-label">09 . 04</p>
     <h1 class="opening-title">Grattis<br/>Pappa</h1>
     <p class="opening-subtitle">Ett år äldre &nbsp;·&nbsp; Aldrig tråkigare</p>
     <p class="scroll-hint">Scroll</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Speedometer -->
+  <section class="section speedometer-section" id="speedoSection">
+    <div class="speedo-flash" id="speedoFlash"></div>
+    <div class="speedo-widget">
+      <div class="speedo-meter">
+        <canvas id="speedoCanvas" width="260" height="160"></canvas>
+        <div class="speedo-number" id="speedoNumber">0</div>
+        <div class="speedo-unit">år</div>
+      </div>
+      <div class="speedo-text" id="speedoText">
+        <p class="speedo-msg" id="speedoMsg"></p>
+      </div>
+    </div>
   </section>
 
   <div class="divider"></div>
@@ -49,6 +78,17 @@
     <p class="section-label">Minnen</p>
     <div class="memory-grid" id="memoryGrid">
       <p class="memory-empty">Laddar minnen...</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Photo gallery -->
+  <section class="section" id="gallerySection">
+    <p class="section-label">Bilder</p>
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Add photos here: <img src="photos/yourphoto.jpg" /> -->
+      <p class="memory-empty" id="galleryEmpty">Bilder kommer snart.</p>
     </div>
   </section>
 
@@ -78,7 +118,7 @@
     const prompt = document.getElementById('openPrompt');
 
     // Headlight positions as fraction of original image
-    const LEFT_X = 0.38, RIGHT_X = 0.62, HEADLIGHT_Y = 0.84;
+    const LEFT_X = 0.38, RIGHT_X = 0.62, HEADLIGHT_Y = 0.74;
 
 function positionGlows() {
       const img = document.getElementById('porscheImg');
@@ -160,6 +200,215 @@ function positionGlows() {
     }
   </script>
 
+  <!-- Speedometer -->
+  <script>
+    const canvas = document.getElementById('speedoCanvas');
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H - 20;
+    const radius = 110;
+
+    // Angle range: -180deg (left) to 0deg (right) = semicircle
+    // 0 maps to -175deg, 45 maps to -5deg
+    function speedToAngle(speed) {
+      return (Math.PI) * (speed / 45) - Math.PI + 0.08;
+    }
+
+    function drawSpeedo(speed) {
+      ctx.clearRect(0, 0, W, H);
+
+      // Outer ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, Math.PI, 0);
+      ctx.strokeStyle = '#2a2a2a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Tick marks and numbers
+      const marks = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45];
+      marks.forEach(v => {
+        const angle = speedToAngle(v);
+        const isMajor = v % 10 === 0 || v === 45 || v === 5;
+        const tickLen = isMajor ? 12 : 7;
+        const x1 = cx + (radius - 4) * Math.cos(angle);
+        const y1 = cy + (radius - 4) * Math.sin(angle);
+        const x2 = cx + (radius - 4 - tickLen) * Math.cos(angle);
+        const y2 = cy + (radius - 4 - tickLen) * Math.sin(angle);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = isMajor ? '#888' : '#444';
+        ctx.lineWidth = isMajor ? 1.5 : 1;
+        ctx.stroke();
+
+        if (isMajor) {
+          const lx = cx + (radius - 26) * Math.cos(angle);
+          const ly = cy + (radius - 26) * Math.sin(angle);
+          ctx.font = '11px Inter, sans-serif';
+          ctx.fillStyle = v === 45 ? '#c8922a' : '#666';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(v, lx, ly);
+        }
+      });
+
+      // Red zone arc (40-45)
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius - 6, speedToAngle(40), speedToAngle(45));
+      ctx.strokeStyle = 'rgba(180,50,50,0.5)';
+      ctx.lineWidth = 5;
+      ctx.stroke();
+
+      // Needle
+      const angle = speedToAngle(speed);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(
+        cx + (radius - 20) * Math.cos(angle),
+        cy + (radius - 20) * Math.sin(angle)
+      );
+      ctx.strokeStyle = '#c8922a';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#c8922a';
+      ctx.fill();
+    }
+
+    // Animate needle
+    let current = 0;
+    const target = 45;
+    let phase = 'sweeping'; // sweeping → settling → flashing → done
+
+    function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+    let startTime = 0;
+    const sweepDuration = 2800;
+    const settleTarget = 41.5;
+
+    function animate() {
+      const now = Date.now();
+      if (now < startTime) { requestAnimationFrame(animate); return; }
+
+      const elapsed = now - startTime;
+
+      if (phase === 'sweeping') {
+        const t = Math.min(elapsed / sweepDuration, 1);
+        current = easeOut(t) * target;
+        document.getElementById('speedoNumber').textContent = Math.round(current);
+        drawSpeedo(current);
+
+        if (t >= 1) {
+          phase = 'flashing';
+          // Trigger flash
+          setTimeout(() => {
+            const flash = document.getElementById('speedoFlash');
+            flash.classList.add('burst');
+            setTimeout(() => flash.classList.remove('burst'), 700);
+          }, 150);
+          // Show SLOW DOWN after flash
+          setTimeout(() => {
+            const msg = document.getElementById('speedoMsg');
+            msg.textContent = 'SLOW DOWN!';
+            msg.classList.add('visible');
+          }, 600);
+          // Start settling after flash
+          setTimeout(() => { phase = 'settling'; settleStart = Date.now(); }, 500);
+        } else {
+          requestAnimationFrame(animate);
+        }
+
+      } else if (phase === 'settling') {
+        const t = Math.min((now - settleStart) / 1200, 1);
+        current = target + (settleTarget - target) * easeOut(t);
+        document.getElementById('speedoNumber').textContent = Math.round(current);
+        drawSpeedo(current);
+
+        if (t >= 1) {
+          phase = 'done';
+        } else {
+          requestAnimationFrame(animate);
+        }
+      }
+    }
+
+    let settleStart = 0;
+
+    // Only start when speedometer section is scrolled into view
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        observer.disconnect();
+        startTime = Date.now() + 300;
+        requestAnimationFrame(animate);
+      }
+    }, { threshold: 0.7 });
+
+    observer.observe(document.getElementById('speedoSection'));
+    drawSpeedo(0);
+  </script>
+
+  <!-- Scroll animations -->
+  <script>
+    // Remove section-level fade-up, apply to individual elements
+    document.querySelectorAll('.opening-section, .section').forEach(section => {
+      section.querySelectorAll('h1, h2, p, .memory-card, .gallery-grid img, canvas, .speedo-widget').forEach((el, i) => {
+        el.classList.add('fade-up');
+        el.style.transitionDelay = (i * 0.1) + 's';
+      });
+    });
+
+    // Scroll speed tracking
+    let lastScrollY = window.scrollY;
+    let scrollSpeed = 0;
+
+    window.addEventListener('scroll', () => {
+      scrollSpeed = Math.abs(window.scrollY - lastScrollY);
+      lastScrollY = window.scrollY;
+    });
+
+    const scrollObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Faster scroll = shorter transition
+          const duration = Math.max(0.3, 0.7 - scrollSpeed * 0.008);
+          entry.target.style.transition = `opacity ${duration}s ease, transform ${duration}s ease`;
+          entry.target.classList.add('in-view');
+        } else {
+          // Reset so it re-animates next time
+          entry.target.classList.remove('in-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-up').forEach(el => scrollObserver.observe(el));
+  </script>
+
+  <!-- Lightbox -->
+  <script>
+    function openLightbox(imgSrc, author, text) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightboxImg').src = imgSrc || '';
+      document.getElementById('lightboxImg').style.display = imgSrc ? 'block' : 'none';
+      document.getElementById('lightboxAuthor').textContent = author;
+      document.getElementById('lightboxText').textContent = text;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
   <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -196,16 +445,22 @@ function positionGlows() {
           const card = document.createElement('div');
           card.className = 'memory-card';
 
-          let imgHtml = '';
-          if (data.photoUrl) {
-            imgHtml = `<img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />`;
-          }
+          let imgHtml = data.photoUrl
+            ? `<img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />`
+            : `<div class="polaroid-placeholder"><span>♡</span></div>`;
 
           card.innerHTML = `
             ${imgHtml}
-            <p class="memory-author">${data.name}</p>
-            <p class="memory-text">${data.message}</p>
+            <div class="polaroid-caption">
+              <p class="memory-author">${data.name}</p>
+              <p class="memory-text">${data.message}</p>
+            </div>
           `;
+
+          card.style.cursor = 'pointer';
+          card.addEventListener('click', () => {
+            openLightbox(data.photoUrl, data.name, data.message);
+          });
 
           grid.appendChild(card);
         });
