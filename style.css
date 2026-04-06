@@ -6,15 +6,15 @@
 }
 
 :root {
-  --black:   #0a0a0a;
-  --dark:    #111111;
-  --card-bg: #161616;
-  --border:  #2a2a2a;
+  --black:   #111a14;
+  --dark:    #162219;
+  --card-bg: #1a2a1e;
+  --border:  #2d4a36;
   --cream:   #f0ece4;
-  --muted:   #7a7570;
-  --amber:   #c8922a;
-  --gold:    #d4a843;
-  --defender: #c9a84c; /* mustard yellow from the Defender */
+  --muted:   #7a9a80;
+  --amber:   #c8a830;
+  --gold:    #d4b843;
+  --defender: #c9aa4c; /* Barbour gold */
 
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans:  'Inter', Helvetica, sans-serif;
@@ -923,6 +923,59 @@ html, body {
 
 .lightbox-close:hover {
   color: var(--cream);
+}
+
+/* ─── Submit Page Gallery ──────────────────────────────────── */
+.submit-gallery {
+  margin-top: 1rem;
+}
+
+.gallery-empty-msg {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.submit-gallery-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.submit-memory-card {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+.submit-memory-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  flex-shrink: 0;
+  filter: grayscale(20%);
+}
+
+.submit-memory-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.submit-memory-info .memory-author {
+  color: var(--cream);
+  font-size: 0.85rem;
+}
+
+.submit-memory-info .memory-text {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 /* ─── Utilities ────────────────────────────────────────────── */

@@ -62,6 +62,14 @@
 
     </form>
 
+    <!-- Gallery -->
+    <div class="submit-gallery">
+      <div class="divider" style="margin-bottom: 2.5rem;"></div>
+      <p class="section-label" id="t-gallery-label">GALLERI</p>
+      <p class="gallery-empty-msg" id="t-gallery-empty">Boken är ännu tom. Bli den första att skriva.</p>
+      <div id="submitGalleryGrid" class="submit-gallery-grid"></div>
+    </div>
+
   </div>
 
   <script>
@@ -79,7 +87,9 @@
         saving: 'Saving...',
         sent: 'Sent ✓',
         success: 'Thank you! Your message has been saved. Jonas will see it on his birthday.',
-        error: 'Something went wrong. Please try again.'
+        error: 'Something went wrong. Please try again.',
+        galleryLabel: 'GALLERY',
+        galleryEmpty: 'The book is still empty. Be the first to write.'
       },
       sv: {
         title: 'Ditt minne',
@@ -94,7 +104,9 @@
         saving: 'Sparar...',
         sent: 'Skickat ✓',
         success: 'Tack! Ditt minne är sparat. Jonas ser det på sin födelsedag.',
-        error: 'Något gick fel. Försök igen.'
+        error: 'Något gick fel. Försök igen.',
+        galleryLabel: 'GALLERI',
+        galleryEmpty: 'Boken är ännu tom. Bli den första att skriva.'
       },
       fi: {
         title: 'Muistosi',
@@ -109,7 +121,9 @@
         saving: 'Tallennetaan...',
         sent: 'Lähetetty ✓',
         success: 'Kiitos! Viestisi on tallennettu. Jonas näkee sen syntymäpäivänään.',
-        error: 'Jotain meni pieleen. Yritä uudelleen.'
+        error: 'Jotain meni pieleen. Yritä uudelleen.',
+        galleryLabel: 'GALLERIA',
+        galleryEmpty: 'Kirja on vielä tyhjä. Ole ensimmäinen kirjoittaja.'
       }
     };
 
@@ -134,12 +148,15 @@
       // Update active button
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+      document.getElementById('t-gallery-label').textContent = t.galleryLabel;
+      document.getElementById('t-gallery-empty').textContent = t.galleryEmpty;
     }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBaBMruVNGIE09Kumg0reFDWtao8i4Dk40",
@@ -211,6 +228,11 @@
 
         successMsg.textContent = t.success;
         successMsg.style.display = 'block';
+
+        // Add new card to gallery immediately
+        document.getElementById('t-gallery-empty').style.display = 'none';
+        renderGalleryCard({ name, message, photoUrl });
+
         document.getElementById('memoryForm').reset();
         document.getElementById('photoPreview').style.display = 'none';
         document.getElementById('photoName').textContent = '';
@@ -224,6 +246,35 @@
         btn.textContent = translations[currentLang].submit;
       }
     });
+
+    function renderGalleryCard(data) {
+      const card = document.createElement('div');
+      card.className = 'submit-memory-card';
+      card.innerHTML = `
+        ${data.photoUrl ? `<img src="${data.photoUrl}" alt="" />` : ''}
+        <div class="submit-memory-info">
+          <span class="memory-author">${data.name}</span>
+          <p class="memory-text">${data.message}</p>
+        </div>
+      `;
+      document.getElementById('submitGalleryGrid').appendChild(card);
+    }
+
+    async function loadGallery() {
+      try {
+        const q = query(collection(db, 'memories'), orderBy('timestamp', 'desc'));
+        const snapshot = await getDocs(q);
+        const emptyMsg = document.getElementById('t-gallery-empty');
+        if (!snapshot.empty) {
+          emptyMsg.style.display = 'none';
+          snapshot.forEach(doc => renderGalleryCard(doc.data()));
+        }
+      } catch (err) {
+        console.error('Gallery load failed:', err);
+      }
+    }
+
+    loadGallery();
 
     // Expose to window so the module script can access currentLang
     window.translations = translations;
