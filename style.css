@@ -487,99 +487,34 @@ html, body {
 /* ─── Submit Page ──────────────────────────────────────────── */
 .submit-page {
   min-height: 100vh;
-  padding: 0;
-}
-
-.submit-wrap {
-  width: 100%;
-  max-width: 620px;
-  margin: 0 auto;
-  padding: 0 2rem 6rem;
-}
-
-/* Hero */
-.submit-hero {
-  text-align: center;
-  padding: 6rem 2rem 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-.submit-book-title {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 12vw, 5.5rem);
-  font-weight: 400;
-  color: var(--cream);
-  line-height: 1;
-}
-
-.submit-book-sub {
-  font-size: 0.9rem;
-  color: var(--muted);
-  line-height: 1.8;
-  text-align: center;
-}
-
-/* Dot divider */
-.dot-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  padding: 1.5rem 0;
+  padding: 3rem 2rem;
 }
 
-.dot-divider::before,
-.dot-divider::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 1px;
-  background: var(--border);
+.submit-container {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
-.dot-divider span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--border);
-  margin: 0 0.75rem;
-}
-
-/* Quote */
-.submit-quote {
+.submit-header h1 {
   font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.7;
-  padding: 0 2rem;
-}
-
-/* Form section header */
-.submit-section-header {
-  margin-bottom: 2.5rem;
-}
-
-.submit-form-title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-size: 2.5rem;
   font-weight: 400;
   color: var(--cream);
-  margin-bottom: 0.6rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.submit-form-sub {
-  font-size: 0.88rem;
+.submit-header p {
+  font-size: 0.9rem;
   color: var(--muted);
   line-height: 1.7;
 }
 
-/* Form groups */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -587,8 +522,8 @@ html, body {
 }
 
 .form-group label {
-  font-size: 0.68rem;
-  letter-spacing: 0.25em;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
   color: var(--amber);
   text-transform: uppercase;
 }
@@ -601,7 +536,7 @@ html, body {
   font-family: var(--font-sans);
   font-size: 0.95rem;
   font-weight: 300;
-  padding: 0.9rem 1rem;
+  padding: 0.85rem 1rem;
   outline: none;
   resize: none;
   transition: border-color 0.2s;
@@ -618,121 +553,57 @@ html, body {
   color: var(--muted);
 }
 
-/* Prompt chips */
-.prompt-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.prompt-chip {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
-  padding: 0.55rem 0.9rem;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  text-align: left;
-  line-height: 1.4;
-}
-
-.prompt-chip:hover {
-  border-color: var(--amber);
-  color: var(--cream);
-}
-
-/* Tone buttons */
-.tone-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.tone-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
-}
-
-.tone-btn:hover {
-  border-color: var(--amber);
-  color: var(--cream);
-}
-
-.tone-btn.active {
-  border-color: var(--amber);
-  background: var(--amber);
-  color: var(--black);
-}
-
-/* Photo drop zone */
-.photo-drop-zone {
-  display: block;
-  border: 1px dashed var(--border);
-  cursor: pointer;
-  position: relative;
-  transition: border-color 0.2s;
-  min-height: 120px;
-}
-
-.photo-drop-zone:hover {
-  border-color: var(--amber);
-}
-
-.photo-drop-inner {
+.photo-upload {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 2.5rem;
-  color: var(--muted);
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
+  gap: 0.5rem;
 }
 
-.photo-drop-icon {
-  font-size: 1.5rem;
-  opacity: 0.6;
+.photo-label-btn {
+  display: inline-block;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.photo-label-btn:hover {
+  border-color: var(--amber);
+  color: var(--cream);
 }
 
 .photo-preview {
   width: 100%;
-  max-height: 260px;
+  max-height: 200px;
   object-fit: cover;
   display: none;
   filter: grayscale(20%);
 }
 
-/* Submit button */
-.submit-book-btn {
+.submit-btn {
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--cream);
+  border: 1px solid var(--amber);
+  color: var(--amber);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  letter-spacing: 0.35em;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  padding: 1.1rem 2rem;
+  padding: 1rem 2rem;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
-  width: 100%;
+  transition: background 0.2s, color 0.2s;
+  align-self: flex-start;
 }
 
-.submit-book-btn:hover {
-  border-color: var(--amber);
+.submit-btn:hover {
   background: var(--amber);
   color: var(--black);
 }
 
-.submit-book-btn:disabled {
+.submit-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
@@ -742,42 +613,6 @@ html, body {
   color: var(--amber);
   letter-spacing: 0.05em;
   display: none;
-}
-
-/* Music float button */
-.music-float-btn {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  padding: 0.65rem 1rem;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  z-index: 50;
-}
-
-.music-float-btn:hover {
-  border-color: var(--amber);
-  color: var(--cream);
-}
-
-/* Footer */
-.submit-footer {
-  text-align: center;
-  padding-bottom: 4rem;
-}
-
-.submit-footer-quote {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.15rem;
-  color: var(--muted);
-  line-height: 1.7;
 }
 
 /* ─── Headlight Opening ────────────────────────────────────── */

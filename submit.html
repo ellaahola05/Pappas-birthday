@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Födelsedagsbok – Jonas</title>
+  <title>Send a birthday message to Jonas</title>
   <link rel="stylesheet" href="style.css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&display=swap"
@@ -13,153 +13,144 @@
 
 <body class="submit-page">
 
-  <!-- ── Hero ─────────────────────────────────────────────── -->
-  <section class="submit-hero">
-    <p class="date-label" style="letter-spacing:0.4em;">SOM ETT GOTT VIN – BLIR BÄTTRE MED TIDEN</p>
-    <h1 class="submit-book-title">Födelsedagsbok</h1>
-    <p class="submit-book-sub">Minnen, hälsningar och berättelser<br>från människor som betyder något.</p>
-  </section>
+  <div class="submit-container">
 
-  <div class="dot-divider"><span></span></div>
+    <!-- Language switcher -->
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <span>·</span>
+      <button class="lang-btn" onclick="setLang('sv')">SV</button>
+      <span>·</span>
+      <button class="lang-btn" onclick="setLang('fi')">FI</button>
+    </div>
 
-  <p class="submit-quote">För stunderna vi minns.<br>Och de vi ännu inte upplevt.</p>
-
-  <div class="dot-divider" style="margin-bottom:4rem;"><span></span></div>
-
-  <!-- ── Form section ──────────────────────────────────────── -->
-  <div class="submit-wrap">
-
-    <div class="submit-section-header">
-      <p class="section-label">DITT BIDRAG</p>
-      <h2 class="submit-form-title">Skriv din hälsning</h2>
-      <p class="submit-form-sub">Du kan skriva på svenska, finska eller engelska.</p>
+    <div class="submit-header">
+      <p class="date-label" style="margin-bottom: 1rem;">För Jonas · 09.04</p>
+      <h1 id="t-title">Write your greeting</h1>
+      <p id="t-desc">
+        Share a memory or birthday message for Jonas.
+        It will appear in his card when he opens it.
+        Write in any language you want.
+      </p>
     </div>
 
     <form id="memoryForm">
 
-      <!-- Inspiration prompts -->
       <div class="form-group">
-        <p class="section-label" style="margin-bottom:1rem;">HITTA INSPIRATION</p>
-        <div class="prompt-chips">
-          <button type="button" class="prompt-chip">En sak jag verkligen uppskattar hos dig är...</button>
-          <button type="button" class="prompt-chip">Jag tänker ofta på den gången när...</button>
-          <button type="button" class="prompt-chip">Ett perfekt ögonblick med dig är...</button>
-          <button type="button" class="prompt-chip">Du har en förmåga att...</button>
-          <button type="button" class="prompt-chip">Något som alltid får mig att le när jag tänker på dig...</button>
-          <button type="button" class="prompt-chip">En plats jag tror du skulle älska är...</button>
-        </div>
+        <label for="nameInput" id="t-name-label">Your name</label>
+        <input type="text" id="nameInput" placeholder="What's your name?" required maxlength="60" />
       </div>
 
-      <!-- Name -->
-      <div class="form-group" style="margin-top:2rem;">
-        <label for="nameInput">DITT NAMN (ELLER DIN HEMLIGA IDENTITET 🕵️)</label>
-        <input type="text" id="nameInput" placeholder="Vem är du?" required maxlength="60" />
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label for="messageInput" id="t-msg-label">Your memory or birthday message</label>
+        <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
-      <!-- Message -->
-      <div class="form-group" style="margin-top:1.5rem;">
-        <label for="messageInput">BERÄTTA NÅGOT VÄRT ATT MINNAS...</label>
-        <textarea id="messageInput" rows="6" placeholder="Skriv här..." required maxlength="800"></textarea>
-      </div>
-
-      <!-- Tone -->
-      <div class="form-group" style="margin-top:1.5rem;">
-        <label>KARAKTÄR</label>
-        <div class="tone-buttons">
-          <button type="button" class="tone-btn" data-tone="eftertänksamt">🏛️ Eftertänksamt</button>
-          <button type="button" class="tone-btn" data-tone="roligt">😂 Roligt</button>
-          <button type="button" class="tone-btn" data-tone="minne">🎁 Minne</button>
-          <button type="button" class="tone-btn" data-tone="berättelse">📕 Berättelse</button>
-        </div>
-        <input type="hidden" id="toneInput" value="" />
-      </div>
-
-      <!-- Photo -->
-      <div class="form-group" style="margin-top:1.5rem;">
-        <label>FOTO (VALFRITT)</label>
-        <label class="photo-drop-zone" for="photoInput" id="photoDropZone">
-          <img class="photo-preview" id="photoPreview" alt="Preview" />
-          <div class="photo-drop-inner" id="photoDropInner">
-            <span class="photo-drop-icon">📷</span>
-            <span>Klicka för att lägga till ett foto</span>
-          </div>
-        </label>
+      <div class="form-group photo-upload" style="margin-top: 1.5rem;">
+        <label id="t-photo-label">Photo (optional)</label>
+        <label class="photo-label-btn" for="photoInput" id="t-photo-btn">Choose a photo</label>
         <input type="file" id="photoInput" accept="image/*" style="display:none;" />
+        <img class="photo-preview" id="photoPreview" alt="Preview" />
+        <p id="photoName" style="font-size:0.75rem; color: var(--muted); margin-top: 0.25rem;"></p>
       </div>
 
-      <!-- Location -->
-      <div class="form-group" style="margin-top:1.5rem;">
-        <label for="locationInput">VAR SKICKAR DU DETTA FRÅN? (VALFRITT)</label>
-        <input type="text" id="locationInput" placeholder="t.ex. Helsingfors 🇫🇮" maxlength="80" />
-      </div>
-
-      <!-- Submit -->
-      <div style="margin-top:2rem; display:flex; flex-direction:column; gap:1rem;">
-        <button type="submit" class="submit-book-btn" id="submitBtn">SPARA I BOKEN</button>
+      <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+        <button type="submit" class="submit-btn" id="submitBtn">Send message</button>
         <p class="success-msg" id="successMsg"></p>
-        <p class="success-msg" id="errorMsg" style="color:#c0392b;"></p>
+        <p class="success-msg" id="errorMsg" style="color: #c0392b;"></p>
       </div>
 
     </form>
 
-    <!-- ── Gallery ──────────────────────────────────────────── -->
+    <!-- Gallery -->
     <div class="submit-gallery">
-      <div class="dot-divider" style="margin:3rem 0 3rem;"><span></span></div>
+      <div class="divider" style="margin-bottom: 2.5rem;"></div>
       <p class="section-label" id="t-gallery-label">GALLERI</p>
-      <h2 class="submit-book-title" style="font-size:clamp(2rem,8vw,3.5rem); margin-bottom:1rem;">Sidorna i boken</h2>
-      <p class="gallery-empty-msg" id="t-gallery-empty"><em>Boken är ännu tom. Bli den första att skriva.</em></p>
+      <p class="gallery-empty-msg" id="t-gallery-empty">Boken är ännu tom. Bli den första att skriva.</p>
       <div id="submitGalleryGrid" class="submit-gallery-grid"></div>
-    </div>
-
-    <!-- ── Footer ───────────────────────────────────────────── -->
-    <div class="submit-footer">
-      <div class="dot-divider" style="margin:3rem 0 2.5rem;"><span></span></div>
-      <blockquote class="submit-footer-quote">"Som ett gott vin – blir bättre med tiden."</blockquote>
-      <p class="date-label" style="margin-top:1rem; letter-spacing:0.35em;">SAMLAT MED OMTANKE</p>
     </div>
 
   </div>
 
-  <!-- ── Music button ──────────────────────────────────────── -->
-  <button class="music-float-btn" id="musicFloatBtn" onclick="toggleMusic()">
-    Spela något passande &#9835;
-  </button>
-  <audio id="bgAudio" src="music.mp3" loop></audio>
-
   <script>
-    // ── Prompt chips ─────────────────────────────────────────
-    document.querySelectorAll('.prompt-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const ta = document.getElementById('messageInput');
-        ta.value = chip.textContent;
-        ta.focus();
-        ta.setSelectionRange(ta.value.length, ta.value.length);
-      });
-    });
-
-    // ── Tone buttons ─────────────────────────────────────────
-    document.querySelectorAll('.tone-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('toneInput').value = btn.dataset.tone;
-      });
-    });
-
-    // ── Music ────────────────────────────────────────────────
-    let musicPlaying = false;
-    function toggleMusic() {
-      const audio = document.getElementById('bgAudio');
-      const btn = document.getElementById('musicFloatBtn');
-      if (musicPlaying) {
-        audio.pause();
-        btn.textContent = 'Spela något passande ♫';
-        musicPlaying = false;
-      } else {
-        audio.play();
-        btn.textContent = 'Pausa musiken ♫';
-        musicPlaying = true;
+    const translations = {
+      en: {
+        title: 'Birthday message',
+        desc: 'Share a memory or birthday message for Jonas. It will appear in his card when he opens it. Write in any language you want.',
+        nameLbl: 'Your name',
+        namePh: "What's your name?",
+        msgLbl: 'Your memory or birthday message',
+        msgPh: 'Tell us something...',
+        photoLbl: 'Photo (optional)',
+        photoBtnLbl: 'Choose a photo',
+        submit: 'Send message',
+        saving: 'Saving...',
+        sent: 'Sent ✓',
+        success: 'Thank you! Your message has been saved. Jonas will see it on his birthday.',
+        error: 'Something went wrong. Please try again.',
+        galleryLabel: 'GALLERY',
+        galleryEmpty: 'The book is still empty. Be the first to write.'
+      },
+      sv: {
+        title: 'Ditt minne',
+        desc: 'Dela ett minne eller ett meddelande till Jonas. Det dyker upp i hans kort när han öppnar det. Skriv på vilket språk du vill.',
+        nameLbl: 'Ditt namn',
+        namePh: 'Vad heter du?',
+        msgLbl: 'Ditt minne eller meddelande',
+        msgPh: 'Berätta något...',
+        photoLbl: 'Foto (valfritt)',
+        photoBtnLbl: 'Välj ett foto',
+        submit: 'Skicka',
+        saving: 'Sparar...',
+        sent: 'Skickat ✓',
+        success: 'Tack! Ditt minne är sparat. Jonas ser det på sin födelsedag.',
+        error: 'Något gick fel. Försök igen.',
+        galleryLabel: 'GALLERI',
+        galleryEmpty: 'Boken är ännu tom. Bli den första att skriva.'
+      },
+      fi: {
+        title: 'Muistosi',
+        desc: 'Jaa muisto tai syntymäpäiväviesti Jonakselle. Se ilmestyy hänen korttiinsa kun hän avaa sen. Kirjoita millä kielellä haluat.',
+        nameLbl: 'Nimesi',
+        namePh: 'Mikä sinun nimesi on?',
+        msgLbl: 'Muistosi tai viestisi',
+        msgPh: 'Kerro jotain...',
+        photoLbl: 'Kuva (valinnainen)',
+        photoBtnLbl: 'Valitse kuva',
+        submit: 'Lähetä',
+        saving: 'Tallennetaan...',
+        sent: 'Lähetetty ✓',
+        success: 'Kiitos! Viestisi on tallennettu. Jonas näkee sen syntymäpäivänään.',
+        error: 'Jotain meni pieleen. Yritä uudelleen.',
+        galleryLabel: 'GALLERIA',
+        galleryEmpty: 'Kirja on vielä tyhjä. Ole ensimmäinen kirjoittaja.'
       }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      const t = translations[lang];
+
+      document.getElementById('t-title').textContent = t.title;
+      document.getElementById('t-desc').textContent = t.desc;
+      document.getElementById('t-name-label').textContent = t.nameLbl;
+      document.getElementById('nameInput').placeholder = t.namePh;
+      document.getElementById('t-msg-label').textContent = t.msgLbl;
+      document.getElementById('messageInput').placeholder = t.msgPh;
+      document.getElementById('t-photo-label').textContent = t.photoLbl;
+      document.getElementById('t-photo-btn').textContent = t.photoBtnLbl;
+
+      const btn = document.getElementById('submitBtn');
+      if (!btn.disabled) btn.textContent = t.submit;
+
+      // Update active button
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+      document.getElementById('t-gallery-label').textContent = t.galleryLabel;
+      document.getElementById('t-gallery-empty').textContent = t.galleryEmpty;
     }
   </script>
 
@@ -182,25 +173,26 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Photo preview
     document.getElementById('photoInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
       const preview = document.getElementById('photoPreview');
-      const inner = document.getElementById('photoDropInner');
+      const nameEl = document.getElementById('photoName');
       preview.src = URL.createObjectURL(file);
       preview.style.display = 'block';
-      inner.style.display = 'none';
+      nameEl.textContent = file.name;
     });
 
     async function uploadToCloudinary(file) {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', CLOUDINARY_PRESET);
+
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
         method: 'POST',
         body: formData
       });
+
       if (!res.ok) throw new Error('Cloudinary upload failed');
       const data = await res.json();
       return data.secure_url;
@@ -208,20 +200,20 @@
 
     document.getElementById('memoryForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const t = window.translations[window.currentLang];
       const btn = document.getElementById('submitBtn');
       const successMsg = document.getElementById('successMsg');
       const errorMsg = document.getElementById('errorMsg');
 
       const name = document.getElementById('nameInput').value.trim();
       const message = document.getElementById('messageInput').value.trim();
-      const location = document.getElementById('locationInput').value.trim();
-      const tone = document.getElementById('toneInput').value;
       const photoFile = document.getElementById('photoInput').files[0];
 
       if (!name || !message) return;
 
       btn.disabled = true;
-      btn.textContent = 'SPARAR...';
+      btn.textContent = t.saving;
       successMsg.style.display = 'none';
       errorMsg.style.display = 'none';
 
@@ -230,28 +222,28 @@
         if (photoFile) photoUrl = await uploadToCloudinary(photoFile);
 
         await addDoc(collection(db, 'memories'), {
-          name, message, photoUrl, location, tone,
+          name, message, photoUrl,
           timestamp: serverTimestamp()
         });
 
-        successMsg.textContent = 'Tack! Ditt minne är sparat. Jonas ser det på sin födelsedag.';
+        successMsg.textContent = t.success;
         successMsg.style.display = 'block';
 
+        // Add new card to gallery immediately
         document.getElementById('t-gallery-empty').style.display = 'none';
-        renderGalleryCard({ name, message, photoUrl, location });
+        renderGalleryCard({ name, message, photoUrl });
 
         document.getElementById('memoryForm').reset();
         document.getElementById('photoPreview').style.display = 'none';
-        document.getElementById('photoDropInner').style.display = 'flex';
-        document.querySelectorAll('.tone-btn').forEach(b => b.classList.remove('active'));
-        btn.textContent = 'SPARAT ✓';
+        document.getElementById('photoName').textContent = '';
+        btn.textContent = t.sent;
 
       } catch (err) {
         console.error(err);
-        errorMsg.textContent = 'Något gick fel. Försök igen.';
+        errorMsg.textContent = t.error;
         errorMsg.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'SPARA I BOKEN';
+        btn.textContent = translations[currentLang].submit;
       }
     });
 
@@ -261,19 +253,20 @@
       card.innerHTML = `
         ${data.photoUrl ? `<img src="${data.photoUrl}" alt="" />` : ''}
         <div class="submit-memory-info">
-          <span class="memory-author">${data.name}${data.location ? ` · <span style="font-style:normal;color:var(--muted);font-size:0.78rem;">${data.location}</span>` : ''}</span>
+          <span class="memory-author">${data.name}</span>
           <p class="memory-text">${data.message}</p>
         </div>
       `;
-      document.getElementById('submitGalleryGrid').prepend(card);
+      document.getElementById('submitGalleryGrid').appendChild(card);
     }
 
     async function loadGallery() {
       try {
         const q = query(collection(db, 'memories'), orderBy('timestamp', 'desc'));
         const snapshot = await getDocs(q);
+        const emptyMsg = document.getElementById('t-gallery-empty');
         if (!snapshot.empty) {
-          document.getElementById('t-gallery-empty').style.display = 'none';
+          emptyMsg.style.display = 'none';
           snapshot.forEach(doc => renderGalleryCard(doc.data()));
         }
       } catch (err) {
@@ -282,6 +275,13 @@
     }
 
     loadGallery();
+
+    // Expose to window so the module script can access currentLang
+    window.translations = translations;
+    window.currentLang = 'en';
+    Object.defineProperty(window, 'currentLang', {
+      get: () => document.querySelector('.lang-btn.active')?.getAttribute('onclick')?.match(/'(\w+)'/)?.[1] || 'en'
+    });
   </script>
 
 </body>
