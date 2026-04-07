@@ -488,7 +488,7 @@ html, body {
 .submit-page {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 3rem 2rem;
 }
