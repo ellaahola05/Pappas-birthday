@@ -46,6 +46,17 @@
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label for="spotifyInput" id="t-song-label">A song that reminds you of Jonas (optional)</label>
+        <input type="url" id="spotifyInput" placeholder="Paste a Spotify track link..." maxlength="300" />
+        <p id="spotifyHint" style="font-size:0.75rem; color: var(--muted); margin-top: 0.35rem;">
+          Open a song in Spotify → Share → Copy link → paste here
+        </p>
+        <p id="spotifyError" style="font-size:0.75rem; color: #c0392b; margin-top: 0.25rem; display:none;">
+          That doesn't look like a Spotify track link. Try again or leave it empty.
+        </p>
+      </div>
+
       <div class="form-group photo-upload" style="margin-top: 1.5rem;">
         <label id="t-photo-label">Photo (optional)</label>
         <label class="photo-label-btn" for="photoInput" id="t-photo-btn">Choose a photo</label>
@@ -81,6 +92,10 @@
         namePh: "What's your name?",
         msgLbl: 'Your memory or birthday message',
         msgPh: 'Tell us something...',
+        songLbl: 'A song that reminds you of Jonas (optional)',
+        songPh: 'Paste a Spotify track link...',
+        songHint: 'Open a song in Spotify → Share → Copy link → paste here',
+        songErr: "That doesn't look like a Spotify track link. Try again or leave it empty.",
         photoLbl: 'Photo (optional)',
         photoBtnLbl: 'Choose a photo',
         submit: 'Send message',
@@ -98,6 +113,10 @@
         namePh: 'Vad heter du?',
         msgLbl: 'Ditt minne eller meddelande',
         msgPh: 'Berätta något...',
+        songLbl: 'En låt som påminner dig om Jonas (valfritt)',
+        songPh: 'Klistra in en Spotify-länk...',
+        songHint: 'Öppna en låt i Spotify → Dela → Kopiera länk → klistra in här',
+        songErr: 'Det verkar inte vara en Spotify-låtlänk. Försök igen eller lämna tomt.',
         photoLbl: 'Foto (valfritt)',
         photoBtnLbl: 'Välj ett foto',
         submit: 'Skicka',
@@ -115,6 +134,10 @@
         namePh: 'Mikä sinun nimesi on?',
         msgLbl: 'Muistosi tai viestisi',
         msgPh: 'Kerro jotain...',
+        songLbl: 'Laulu, joka muistuttaa sinua Jonaksesta (valinnainen)',
+        songPh: 'Liitä Spotify-kappalelinkki...',
+        songHint: 'Avaa kappale Spotifyssa → Jaa → Kopioi linkki → liitä tähän',
+        songErr: 'Tämä ei näytä Spotify-kappalelinkiltä. Yritä uudelleen tai jätä tyhjäksi.',
         photoLbl: 'Kuva (valinnainen)',
         photoBtnLbl: 'Valitse kuva',
         submit: 'Lähetä',
@@ -139,6 +162,10 @@
       document.getElementById('nameInput').placeholder = t.namePh;
       document.getElementById('t-msg-label').textContent = t.msgLbl;
       document.getElementById('messageInput').placeholder = t.msgPh;
+      document.getElementById('t-song-label').textContent = t.songLbl;
+      document.getElementById('spotifyInput').placeholder = t.songPh;
+      document.getElementById('spotifyHint').textContent = t.songHint;
+      document.getElementById('spotifyError').textContent = t.songErr;
       document.getElementById('t-photo-label').textContent = t.photoLbl;
       document.getElementById('t-photo-btn').textContent = t.photoBtnLbl;
 
@@ -209,8 +236,19 @@
       const name = document.getElementById('nameInput').value.trim();
       const message = document.getElementById('messageInput').value.trim();
       const photoFile = document.getElementById('photoInput').files[0];
+      const spotifyRaw = document.getElementById('spotifyInput').value.trim();
+      const spotifyError = document.getElementById('spotifyError');
 
       if (!name || !message) return;
+
+      // Validate Spotify URL if provided
+      const spotifyTrackId = spotifyRaw ? extractSpotifyTrackId(spotifyRaw) : null;
+      if (spotifyRaw && !spotifyTrackId) {
+        spotifyError.style.display = 'block';
+        return;
+      }
+      spotifyError.style.display = 'none';
+      const spotifyUrl = spotifyTrackId ? `https://open.spotify.com/track/${spotifyTrackId}` : null;
 
       btn.disabled = true;
       btn.textContent = t.saving;
@@ -222,7 +260,7 @@
         if (photoFile) photoUrl = await uploadToCloudinary(photoFile);
 
         await addDoc(collection(db, 'memories'), {
-          name, message, photoUrl,
+          name, message, photoUrl, spotifyUrl,
           timestamp: serverTimestamp()
         });
 
@@ -231,11 +269,12 @@
 
         // Add new card to gallery immediately
         document.getElementById('t-gallery-empty').style.display = 'none';
-        renderGalleryCard({ name, message, photoUrl });
+        renderGalleryCard({ name, message, photoUrl, spotifyUrl });
 
         document.getElementById('memoryForm').reset();
         document.getElementById('photoPreview').style.display = 'none';
         document.getElementById('photoName').textContent = '';
+        document.getElementById('spotifyError').style.display = 'none';
         btn.textContent = t.sent;
 
       } catch (err) {
@@ -247,14 +286,21 @@
       }
     });
 
+    function extractSpotifyTrackId(url) {
+      const match = url.match(/spotify\.com\/track\/([a-zA-Z0-9]+)/);
+      return match ? match[1] : null;
+    }
+
     function renderGalleryCard(data) {
       const card = document.createElement('div');
       card.className = 'submit-memory-card';
+      const trackId = data.spotifyUrl ? extractSpotifyTrackId(data.spotifyUrl) : null;
       card.innerHTML = `
         ${data.photoUrl ? `<img src="${data.photoUrl}" alt="" />` : ''}
         <div class="submit-memory-info">
           <span class="memory-author">${data.name}</span>
           <p class="memory-text">${data.message}</p>
+          ${trackId ? `<iframe style="margin-top:0.75rem; border-radius:8px;" src="https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>` : ''}
         </div>
       `;
       document.getElementById('submitGalleryGrid').appendChild(card);

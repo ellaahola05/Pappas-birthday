@@ -87,6 +87,15 @@
 
   <div class="divider"></div>
 
+  <!-- Soundtrack -->
+  <section class="section" id="soundtrackSection">
+    <p class="section-label">Soundtrack</p>
+    <p class="memory-empty" id="soundtrackEmpty" style="display:none;">Inga låtar ännu.</p>
+    <div id="soundtrackList" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- Photo gallery -->
   <section class="section" id="gallerySection">
     <p class="section-label">Bilder</p>
@@ -432,8 +441,15 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    function extractSpotifyTrackId(url) {
+      const match = url.match(/spotify\.com\/track\/([a-zA-Z0-9]+)/);
+      return match ? match[1] : null;
+    }
+
     async function loadMemories() {
       const grid = document.getElementById('memoryGrid');
+      const soundtrackList = document.getElementById('soundtrackList');
+      const soundtrackEmpty = document.getElementById('soundtrackEmpty');
 
       try {
         const q = query(collection(db, 'memories'), orderBy('timestamp', 'asc'));
@@ -441,13 +457,17 @@
 
         if (snapshot.empty) {
           grid.innerHTML = '<p class="memory-empty">Inga minnen ännu.</p>';
+          soundtrackEmpty.style.display = 'block';
           return;
         }
 
         grid.innerHTML = '';
+        let songCount = 0;
 
         snapshot.forEach(doc => {
           const data = doc.data();
+
+          // Memory card
           const card = document.createElement('div');
           card.className = 'memory-card';
 
@@ -469,7 +489,27 @@
           });
 
           grid.appendChild(card);
+
+          // Soundtrack entry
+          if (data.spotifyUrl) {
+            const trackId = extractSpotifyTrackId(data.spotifyUrl);
+            if (trackId) {
+              songCount++;
+              const wrapper = document.createElement('div');
+              wrapper.className = 'soundtrack-entry';
+              wrapper.innerHTML = `
+                <p class="soundtrack-from">Från ${data.name}</p>
+                <iframe src="https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0"
+                  width="100%" height="80" frameborder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy" style="border-radius:10px;"></iframe>
+              `;
+              soundtrackList.appendChild(wrapper);
+            }
+          }
         });
+
+        if (songCount === 0) soundtrackEmpty.style.display = 'block';
 
       } catch (err) {
         console.error('Could not load memories:', err);

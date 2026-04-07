@@ -990,6 +990,20 @@ html, body {
   }
 }
 
+/* ─── Soundtrack ─────────────────────────────────────────── */
+.soundtrack-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.soundtrack-from {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
 /* Mobile tweaks */
 @media (max-width: 600px) {
   .memory-grid {
