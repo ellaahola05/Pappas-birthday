@@ -44,7 +44,7 @@
       <div class="form-group" style="margin-top: 2.5rem;">
         <label for="messageInput" id="t-msg-label">Your memory or birthday message</label>
         <div class="inspiration-prompts" id="inspirationPrompts">
-          <p class="inspiration-label">Need inspiration? Click a prompt:</p>
+          <p class="inspiration-label" id="t-inspiration-label">Need inspiration? Click a prompt:</p>
           <div class="prompt-chips">
             <button type="button" class="prompt-chip" onclick="usePrompt(this)">✈️ A trip or moment you'll never
               forget</button>
@@ -111,6 +111,17 @@
         namePh: "What's your name?",
         msgLbl: 'Your memory or birthday message',
         msgPh: 'Tell us something...',
+        msgPh2: 'Write your answer here...',
+        inspirationLbl: 'Need inspiration? Click a prompt:',
+        prompts: [
+          '✈️ A trip or moment you\'ll never forget',
+          '🫂 A time he helped you or was there for you',
+          '🎉 A favorite memory with Jonas',
+          '🥸 What\'s the most "Jonas" thing he\'s ever done?',
+          '🤩 What do you admire most about him?',
+          '🏎️ If Jonas were a car, which one would he be and why?',
+          '🌍 Where should he go on his next adventure?',
+        ],
         songLbl: 'A song that reminds you of Jonas (optional)',
         songPh: 'Paste a Spotify track link...',
         songHint: 'Open a song in Spotify → Share → Copy link → paste here',
@@ -130,6 +141,17 @@
         namePh: 'Vad heter du?',
         msgLbl: 'Ditt minne eller meddelande',
         msgPh: 'Berätta något...',
+        msgPh2: 'Skriv ditt svar här...',
+        inspirationLbl: 'Behöver du inspiration? Klicka på ett alternativ:',
+        prompts: [
+          '✈️ En resa eller ett ögonblick du aldrig glömmer',
+          '🫂 En gång han hjälpte dig eller fanns där för dig',
+          '🎉 Ett favoritminne med Jonas',
+          '🥸 Det mest "Jonas"-aktiga han någonsin gjort?',
+          '🤩 Vad beundrar du mest hos honom?',
+          '🏎️ Om Jonas vore en bil, vilken skulle det vara och varför?',
+          '🌍 Vart borde han åka på nästa äventyr?',
+        ],
         songLbl: 'En låt som påminner dig om Jonas (valfritt)',
         songPh: 'Klistra in en Spotify-länk...',
         songHint: 'Öppna en låt i Spotify → Dela → Kopiera länk → klistra in här',
@@ -149,6 +171,17 @@
         namePh: 'Mikä sinun nimesi on?',
         msgLbl: 'Muistosi tai viestisi',
         msgPh: 'Kerro jotain...',
+        msgPh2: 'Kirjoita vastauksesi tähän...',
+        inspirationLbl: 'Tarvitsetko inspiraatiota? Klikkaa vinkistä:',
+        prompts: [
+          '✈️ Matka tai hetki, jota et koskaan unohda',
+          '🫂 Kerta, jolloin hän auttoi sinua tai oli siinä puolestasi',
+          '🎉 Lempimuistosi Jonaksen kanssa',
+          '🥸 Kaikkein "Jonas-maisin" asia, mitä hän on koskaan tehnyt?',
+          '🤩 Mitä ihaelet hänessä eniten?',
+          '🏎️ Jos Jonas olisi auto, mikä se olisi ja miksi?',
+          '🌍 Minne hänen pitäisi lähteä seuraavalle seikkailulle?',
+        ],
         songLbl: 'Laulu, joka muistuttaa sinua Jonaksesta (valinnainen)',
         songPh: 'Liitä Spotify-kappalelinkki...',
         songHint: 'Avaa kappale Spotifyssa → Jaa → Kopioi linkki → liitä tähän',
@@ -181,6 +214,16 @@
       document.getElementById('spotifyError').textContent = t.songErr;
       document.getElementById('t-photo-label').textContent = t.photoLbl;
       document.getElementById('t-photo-btn').textContent = t.photoBtnLbl;
+      document.getElementById('t-inspiration-label').textContent = t.inspirationLbl;
+
+      document.querySelectorAll('.prompt-chip').forEach((chip, i) => {
+        chip.textContent = t.prompts[i];
+      });
+
+      const activePromptText = document.getElementById('activePromptText').textContent;
+      if (activePromptText) {
+        document.getElementById('messageInput').placeholder = t.msgPh2;
+      }
 
       const btn = document.getElementById('submitBtn');
       if (!btn.disabled) btn.textContent = t.submit;
@@ -192,22 +235,24 @@
     }
 
     function usePrompt(btn) {
+      const t = translations[currentLang];
       const textarea = document.getElementById('messageInput');
       const activePrompt = document.getElementById('activePrompt');
       document.getElementById('activePromptText').textContent = btn.textContent;
       activePrompt.style.display = 'block';
       textarea.value = '';
-      textarea.placeholder = 'Write your answer here...';
+      textarea.placeholder = t.msgPh2;
       textarea.focus();
     }
 
     function clearPrompt() {
+      const t = translations[currentLang];
       const activePrompt = document.getElementById('activePrompt');
       activePrompt.style.display = 'none';
       document.getElementById('activePromptText').textContent = '';
       const textarea = document.getElementById('messageInput');
       textarea.value = '';
-      textarea.placeholder = 'Tell us something...';
+      textarea.placeholder = t.msgPh;
       textarea.focus();
     }
   </script>
