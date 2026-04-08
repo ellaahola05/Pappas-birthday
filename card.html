@@ -494,10 +494,11 @@
             msgCount++;
             const msg = document.createElement('div');
             msg.className = 'message-card';
+            msg.style.cssText = 'background:#1a2a1e; border:1px solid #2d4a36; padding:1.1rem 1.4rem; display:flex; flex-direction:column; gap:0.5rem; border-radius:2px;';
             msg.innerHTML = `
-              <p class="memory-author">${data.name}</p>
-              ${data.prompt ? `<p class="memory-prompt">${data.prompt}</p>` : ''}
-              <p class="memory-text">${data.message}</p>
+              <p class="memory-author" style="color:#c8a830; font-family:\'Playfair Display\',serif; font-style:italic; font-size:0.85rem;">${data.name}</p>
+              ${data.prompt ? `<p class="memory-prompt" style="color:#7a9a80; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase;">${data.prompt}</p>` : ''}
+              <p class="memory-text" style="color:#f0ece4; font-size:0.78rem; line-height:1.55;">${data.message}</p>
             `;
             messagesList.appendChild(msg);
           }
