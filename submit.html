@@ -312,6 +312,7 @@
       const name = document.getElementById('nameInput').value.trim();
       const message = document.getElementById('messageInput').value.trim();
       const prompt = document.getElementById('activePromptText').textContent.trim() || null;
+      console.log('Saving prompt:', prompt);
       const photoFile = document.getElementById('photoInput').files[0];
       const spotifyRaw = document.getElementById('spotifyInput').value.trim();
       const spotifyError = document.getElementById('spotifyError');

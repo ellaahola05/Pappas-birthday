@@ -469,6 +469,7 @@
 
         snapshot.forEach(doc => {
           const data = doc.data();
+          console.log('Memory data:', data.name, '| prompt:', data.prompt);
 
           if (data.photoUrl) {
             // Has photo → Minnen (polaroid grid)
