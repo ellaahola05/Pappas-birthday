@@ -622,7 +622,7 @@
 
     window.renderMsgPage = function(page) {
       const cards = window._msgCards;
-      const perPage = 6;
+      const perPage = 4;
       const totalPages = Math.ceil(cards.length / perPage);
       const list = document.getElementById('messagesList');
       const pagination = document.getElementById('msgPagination');
@@ -643,7 +643,7 @@
     }
 
     window.changeMsgPage = function(dir) {
-      const totalPages = Math.ceil(window._msgCards.length / 6);
+      const totalPages = Math.ceil(window._msgCards.length / 4);
       window._msgPage = Math.max(0, Math.min(window._msgPage + dir, totalPages - 1));
       window.renderMsgPage(window._msgPage);
       document.getElementById('messagesList').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -651,7 +651,7 @@
 
     window.renderSongPage = function(page) {
       const cards = window._songCards;
-      const perPage = 6;
+      const perPage = 4;
       const totalPages = Math.ceil(cards.length / perPage);
       const list = document.getElementById('soundtrackList');
       const pagination = document.getElementById('songPagination');
@@ -672,7 +672,7 @@
     }
 
     window.changeSongPage = function(dir) {
-      const totalPages = Math.ceil(window._songCards.length / 6);
+      const totalPages = Math.ceil(window._songCards.length / 4);
       window._songPage = Math.max(0, Math.min(window._songPage + dir, totalPages - 1));
       window.renderSongPage(window._songPage);
       document.getElementById('soundtrackList').scrollIntoView({ behavior: 'smooth', block: 'start' });
