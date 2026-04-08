@@ -37,7 +37,7 @@
     <form id="memoryForm">
 
       <div class="form-group">
-        <label for="nameInput" id="t-name-label">Your name</label>
+        <label for="nameInput" id="t-name-label">Your name (or your secret identity 👀)</label>
         <input type="text" id="nameInput" placeholder="What's your name?" required maxlength="60" />
       </div>
 
@@ -46,18 +46,26 @@
         <div class="inspiration-prompts" id="inspirationPrompts">
           <p class="inspiration-label">Need inspiration? Click a prompt:</p>
           <div class="prompt-chips">
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A trip or moment you'll never forget</button>
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A time he helped you or was there for you</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A trip or moment you'll never
+              forget</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A time he helped you or was there for
+              you</button>
             <button type="button" class="prompt-chip" onclick="usePrompt(this)">A favorite memory with Jonas</button>
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What's the most "Jonas" thing he's ever done?</button>
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What do you admire most about him?</button>
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">If Jonas were a car, which one would he be and why?</button>
-            <button type="button" class="prompt-chip" onclick="usePrompt(this)">Where should he go on his next adventure?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What's the most "Jonas" thing he's ever
+              done?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What do you admire most about
+              him?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">If Jonas were a car, which one would he
+              be and why?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">Where should he go on his next
+              adventure?</button>
           </div>
         </div>
-        <p id="activePrompt" style="display:none; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin:0.4rem 0 0.2rem;">
+        <p id="activePrompt"
+          style="display:none; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin:0.4rem 0 0.2rem;">
           <span id="activePromptText"></span>
-          <button type="button" onclick="clearPrompt()" style="background:none; border:none; color:var(--muted); font-size:0.9rem; cursor:pointer; padding:0 0 0 0.4rem; vertical-align:middle; line-height:1;">&times;</button>
+          <button type="button" onclick="clearPrompt()"
+            style="background:none; border:none; color:var(--muted); font-size:0.9rem; cursor:pointer; padding:0 0 0 0.4rem; vertical-align:middle; line-height:1;">&times;</button>
         </p>
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
