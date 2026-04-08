@@ -43,6 +43,18 @@
 
       <div class="form-group" style="margin-top: 1.5rem;">
         <label for="messageInput" id="t-msg-label">Your memory or birthday message</label>
+        <div class="inspiration-prompts" id="inspirationPrompts">
+          <p class="inspiration-label">Need inspiration? Click a prompt:</p>
+          <div class="prompt-chips">
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A trip or moment you'll never forget</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A time he helped you or was there for you</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">A favorite memory with Jonas</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What's the most "Jonas" thing he's ever done?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">What do you admire most about him?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">If Jonas were a car, which one would he be and why?</button>
+            <button type="button" class="prompt-chip" onclick="usePrompt(this)">Where should he go on his next adventure?</button>
+          </div>
+        </div>
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
@@ -73,13 +85,6 @@
 
     </form>
 
-    <!-- Gallery -->
-    <div class="submit-gallery">
-      <div class="divider" style="margin-bottom: 2.5rem;"></div>
-      <p class="section-label" id="t-gallery-label">GALLERI</p>
-      <p class="gallery-empty-msg" id="t-gallery-empty">Boken är ännu tom. Bli den första att skriva.</p>
-      <div id="submitGalleryGrid" class="submit-gallery-grid"></div>
-    </div>
 
   </div>
 
@@ -103,8 +108,6 @@
         sent: 'Sent ✓',
         success: 'Thank you! Your message has been saved. Jonas will see it on his birthday.',
         error: 'Something went wrong. Please try again.',
-        galleryLabel: 'GALLERY',
-        galleryEmpty: 'The book is still empty. Be the first to write.'
       },
       sv: {
         title: 'Ditt minne',
@@ -124,8 +127,6 @@
         sent: 'Skickat ✓',
         success: 'Tack! Ditt minne är sparat. Jonas ser det på sin födelsedag.',
         error: 'Något gick fel. Försök igen.',
-        galleryLabel: 'GALLERI',
-        galleryEmpty: 'Boken är ännu tom. Bli den första att skriva.'
       },
       fi: {
         title: 'Muistosi',
@@ -145,8 +146,6 @@
         sent: 'Lähetetty ✓',
         success: 'Kiitos! Viestisi on tallennettu. Jonas näkee sen syntymäpäivänään.',
         error: 'Jotain meni pieleen. Yritä uudelleen.',
-        galleryLabel: 'GALLERIA',
-        galleryEmpty: 'Kirja on vielä tyhjä. Ole ensimmäinen kirjoittaja.'
       }
     };
 
@@ -176,14 +175,20 @@
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
       document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
 
-      document.getElementById('t-gallery-label').textContent = t.galleryLabel;
-      document.getElementById('t-gallery-empty').textContent = t.galleryEmpty;
+    }
+
+    function usePrompt(btn) {
+      const textarea = document.getElementById('messageInput');
+      textarea.value = btn.textContent;
+      textarea.focus();
+      // Move cursor to end
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
     }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBaBMruVNGIE09Kumg0reFDWtao8i4Dk40",
@@ -267,10 +272,6 @@
         successMsg.textContent = t.success;
         successMsg.style.display = 'block';
 
-        // Add new card to gallery immediately
-        document.getElementById('t-gallery-empty').style.display = 'none';
-        renderGalleryCard({ name, message, photoUrl, spotifyUrl });
-
         document.getElementById('memoryForm').reset();
         document.getElementById('photoPreview').style.display = 'none';
         document.getElementById('photoName').textContent = '';
@@ -290,37 +291,6 @@
       const match = url.match(/spotify\.com\/track\/([a-zA-Z0-9]+)/);
       return match ? match[1] : null;
     }
-
-    function renderGalleryCard(data) {
-      const card = document.createElement('div');
-      card.className = 'submit-memory-card';
-      const trackId = data.spotifyUrl ? extractSpotifyTrackId(data.spotifyUrl) : null;
-      card.innerHTML = `
-        ${data.photoUrl ? `<img src="${data.photoUrl}" alt="" />` : ''}
-        <div class="submit-memory-info">
-          <span class="memory-author">${data.name}</span>
-          <p class="memory-text">${data.message}</p>
-          ${trackId ? `<iframe style="margin-top:0.75rem; border-radius:8px;" src="https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0" width="100%" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>` : ''}
-        </div>
-      `;
-      document.getElementById('submitGalleryGrid').appendChild(card);
-    }
-
-    async function loadGallery() {
-      try {
-        const q = query(collection(db, 'memories'), orderBy('timestamp', 'desc'));
-        const snapshot = await getDocs(q);
-        const emptyMsg = document.getElementById('t-gallery-empty');
-        if (!snapshot.empty) {
-          emptyMsg.style.display = 'none';
-          snapshot.forEach(doc => renderGalleryCard(doc.data()));
-        }
-      } catch (err) {
-        console.error('Gallery load failed:', err);
-      }
-    }
-
-    loadGallery();
 
     // Expose to window so the module script can access currentLang
     window.translations = translations;
