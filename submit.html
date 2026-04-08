@@ -41,7 +41,7 @@
         <input type="text" id="nameInput" placeholder="What's your name?" required maxlength="60" />
       </div>
 
-      <div class="form-group" style="margin-top: 1.5rem;">
+      <div class="form-group" style="margin-top: 2.5rem;">
         <label for="messageInput" id="t-msg-label">Your memory or birthday message</label>
         <div class="inspiration-prompts" id="inspirationPrompts">
           <p class="inspiration-label">Need inspiration? Click a prompt:</p>
@@ -67,10 +67,10 @@
           <button type="button" onclick="clearPrompt()"
             style="background:none; border:none; color:var(--muted); font-size:0.9rem; cursor:pointer; padding:0 0 0 0.4rem; vertical-align:middle; line-height:1;">&times;</button>
         </p>
-        <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
+        <textarea id="messageInput" rows="8" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
-      <div class="form-group" style="margin-top: 1.5rem;">
+      <div class="form-group" style="margin-top: 2.5rem;">
         <label for="spotifyInput" id="t-song-label">A song that reminds you of Jonas (optional)</label>
         <input type="url" id="spotifyInput" placeholder="Paste a Spotify track link..." maxlength="300" />
         <p id="spotifyHint" style="font-size:0.75rem; color: var(--muted); margin-top: 0.35rem;">
@@ -81,7 +81,7 @@
         </p>
       </div>
 
-      <div class="form-group photo-upload" style="margin-top: 1.5rem;">
+      <div class="form-group photo-upload" style="margin-top: 2.5rem;">
         <label id="t-photo-label">Photo (optional)</label>
         <label class="photo-label-btn" for="photoInput" id="t-photo-btn">Choose a photo</label>
         <input type="file" id="photoInput" accept="image/*" style="display:none;" />
