@@ -1006,17 +1006,33 @@ html, body {
 }
 
 .message-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  padding: 1.1rem 1.4rem;
+  background: #0e1812;
+  border: 1px solid rgba(200, 168, 48, 0.25);
+  border-top: 2px solid rgba(200, 168, 48, 0.55);
+  padding: 1.6rem 1.75rem 1.4rem 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  border-radius: 2px;
+  gap: 0.55rem;
+  border-radius: 3px;
+  position: relative;
+}
+
+.message-card::before {
+  content: '\201C';
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  color: rgba(200, 168, 48, 0.18);
+  position: absolute;
+  top: -0.3rem;
+  left: 1.1rem;
+  line-height: 1;
+  pointer-events: none;
 }
 
 .message-card .memory-author {
   color: var(--amber);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(200, 168, 48, 0.2);
 }
 
 .message-card .memory-text {
