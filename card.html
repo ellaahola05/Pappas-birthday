@@ -203,8 +203,8 @@
       // Start music
       const audio = document.getElementById('audioPlayer');
       audio.currentTime = 0;
-      audio.play();
       document.getElementById('musicPlayer').style.display = 'flex';
+      audio.play().catch(() => {});
 
       // Fade out overlay
       overlay.classList.add('fade-out');
