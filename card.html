@@ -125,15 +125,16 @@
     <p style="margin-top: 1rem; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.2em;">Älskar dig!</p>
   </section>
 
+  <audio id="audioPlayer" src="music.mp3" loop></audio>
+
   <!-- Music player -->
   <div class="music-player" id="musicPlayer" style="display:none;">
-    <audio id="audioPlayer" src="music.mp3" loop></audio>
     <div class="music-info">
       <span class="music-title">Heaven Is a Place on Earth</span>
       <span class="music-artist">Belinda Carlisle</span>
     </div>
     <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">❚❚</button>
-    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1"
+    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="0.5"
       oninput="document.getElementById('audioPlayer').volume = this.value" />
     <button class="music-close"
       onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
@@ -202,9 +203,10 @@
 
       // Start music
       const audio = document.getElementById('audioPlayer');
+      audio.volume = 0.5;
       audio.currentTime = 0;
       document.getElementById('musicPlayer').style.display = 'flex';
-      audio.play().catch(() => {});
+      audio.play().catch(err => console.warn('Audio play failed:', err));
 
       // Fade out overlay
       overlay.classList.add('fade-out');
