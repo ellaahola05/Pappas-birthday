@@ -990,6 +990,21 @@ html, body {
   }
 }
 
+/* ─── Messages (text-only submissions) ──────────────────── */
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.message-card {
+  border-left: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 /* ─── Soundtrack ─────────────────────────────────────────── */
 .soundtrack-entry {
   display: flex;

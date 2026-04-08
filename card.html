@@ -96,12 +96,11 @@
 
   <div class="divider"></div>
 
-  <!-- Photo gallery -->
-  <section class="section" id="gallerySection">
-    <p class="section-label">Bilder</p>
-    <div class="gallery-grid" id="galleryGrid">
-      <!-- Add photos here: <img src="photos/yourphoto.jpg" /> -->
-      <p class="memory-empty" id="galleryEmpty">Bilder kommer snart.</p>
+  <!-- Text-only messages -->
+  <section class="section" id="messagesSection">
+    <p class="section-label">Meddelanden</p>
+    <div class="messages-list" id="messagesList">
+      <p class="memory-empty" id="messagesEmpty">Inga meddelanden ännu.</p>
     </div>
   </section>
 
@@ -448,6 +447,8 @@
 
     async function loadMemories() {
       const grid = document.getElementById('memoryGrid');
+      const messagesList = document.getElementById('messagesList');
+      const messagesEmpty = document.getElementById('messagesEmpty');
       const soundtrackList = document.getElementById('soundtrackList');
       const soundtrackEmpty = document.getElementById('soundtrackEmpty');
 
@@ -462,33 +463,41 @@
         }
 
         grid.innerHTML = '';
+        let photoCount = 0;
+        let msgCount = 0;
         let songCount = 0;
 
         snapshot.forEach(doc => {
           const data = doc.data();
 
-          // Memory card
-          const card = document.createElement('div');
-          card.className = 'memory-card';
-
-          let imgHtml = data.photoUrl
-            ? `<img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />`
-            : `<div class="polaroid-placeholder"><span>♡</span></div>`;
-
-          card.innerHTML = `
-            ${imgHtml}
-            <div class="polaroid-caption">
+          if (data.photoUrl) {
+            // Has photo → Minnen (polaroid grid)
+            photoCount++;
+            const card = document.createElement('div');
+            card.className = 'memory-card';
+            card.innerHTML = `
+              <img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />
+              <div class="polaroid-caption">
+                <p class="memory-author">${data.name}</p>
+                <p class="memory-text">${data.message}</p>
+              </div>
+            `;
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+              openLightbox(data.photoUrl, data.name, data.message);
+            });
+            grid.appendChild(card);
+          } else {
+            // Text only → Meddelanden
+            msgCount++;
+            const msg = document.createElement('div');
+            msg.className = 'message-card';
+            msg.innerHTML = `
               <p class="memory-author">${data.name}</p>
               <p class="memory-text">${data.message}</p>
-            </div>
-          `;
-
-          card.style.cursor = 'pointer';
-          card.addEventListener('click', () => {
-            openLightbox(data.photoUrl, data.name, data.message);
-          });
-
-          grid.appendChild(card);
+            `;
+            messagesList.appendChild(msg);
+          }
 
           // Soundtrack entry
           if (data.spotifyUrl) {
@@ -509,6 +518,9 @@
           }
         });
 
+        if (photoCount === 0) grid.innerHTML = '<p class="memory-empty">Inga bilder ännu.</p>';
+        if (msgCount === 0) messagesEmpty.style.display = 'block';
+        else messagesEmpty.style.display = 'none';
         if (songCount === 0) soundtrackEmpty.style.display = 'block';
 
       } catch (err) {
