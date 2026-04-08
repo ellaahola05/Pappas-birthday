@@ -634,12 +634,10 @@
         list.appendChild(cards[i]);
       }
 
-      if (totalPages > 1) {
-        pagination.style.display = 'flex';
-        indicator.textContent = `${page + 1} / ${totalPages}`;
-        document.getElementById('msgPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
-        document.getElementById('msgNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
-      }
+      pagination.style.display = totalPages > 1 ? 'flex' : 'none';
+      indicator.textContent = `${page + 1} / ${totalPages}`;
+      document.getElementById('msgPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
+      document.getElementById('msgNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
     }
 
     window.changeMsgPage = function(dir) {
@@ -663,12 +661,10 @@
         list.appendChild(cards[i]);
       }
 
-      if (totalPages > 1) {
-        pagination.style.display = 'flex';
-        indicator.textContent = `${page + 1} / ${totalPages}`;
-        document.getElementById('songPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
-        document.getElementById('songNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
-      }
+      pagination.style.display = totalPages > 1 ? 'flex' : 'none';
+      indicator.textContent = `${page + 1} / ${totalPages}`;
+      document.getElementById('songPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
+      document.getElementById('songNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
     }
 
     window.changeSongPage = function(dir) {
