@@ -55,7 +55,10 @@
             <button type="button" class="prompt-chip" onclick="usePrompt(this)">Where should he go on his next adventure?</button>
           </div>
         </div>
-        <p id="activePrompt" style="display:none; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin:0.4rem 0 0.2rem;"></p>
+        <p id="activePrompt" style="display:none; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin:0.4rem 0 0.2rem;">
+          <span id="activePromptText"></span>
+          <button type="button" onclick="clearPrompt()" style="background:none; border:none; color:var(--muted); font-size:0.9rem; cursor:pointer; padding:0 0 0 0.4rem; vertical-align:middle; line-height:1;">&times;</button>
+        </p>
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
@@ -181,10 +184,20 @@
     function usePrompt(btn) {
       const textarea = document.getElementById('messageInput');
       const activePrompt = document.getElementById('activePrompt');
-      activePrompt.textContent = btn.textContent;
+      document.getElementById('activePromptText').textContent = btn.textContent;
       activePrompt.style.display = 'block';
       textarea.value = '';
       textarea.placeholder = 'Write your answer here...';
+      textarea.focus();
+    }
+
+    function clearPrompt() {
+      const activePrompt = document.getElementById('activePrompt');
+      activePrompt.style.display = 'none';
+      document.getElementById('activePromptText').textContent = '';
+      const textarea = document.getElementById('messageInput');
+      textarea.value = '';
+      textarea.placeholder = 'Tell us something...';
       textarea.focus();
     }
   </script>
