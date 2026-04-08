@@ -343,8 +343,10 @@
             const msg = document.getElementById('speedoMsg');
             msg.textContent = 'SLOW DOWN!';
             msg.classList.add('visible');
-            document.getElementById('speedoTagline').classList.add('visible');
           }, 600);
+          setTimeout(() => {
+            document.getElementById('speedoTagline').classList.add('visible');
+          }, 2000);
           // Start settling after flash
           setTimeout(() => { phase = 'settling'; settleStart = Date.now(); }, 500);
         } else {
