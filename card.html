@@ -80,7 +80,7 @@
 
   <!-- Memory wall -->
   <section class="section">
-    <p class="section-label">Minnen</p>
+    <p class="section-label">Galleriet</p>
     <div class="memory-grid" id="memoryGrid">
       <p class="memory-empty">Laddar minnen...</p>
     </div>
@@ -95,8 +95,10 @@
 
   <!-- Soundtrack -->
   <section class="section" id="soundtrackSection">
-    <p class="section-label">Soundtrack</p>
-    <p style="font-family: var(--font-serif); font-style: italic; color: var(--muted); font-size: 1rem; margin-top: -1.2rem; margin-bottom: 1.5rem;">Låtar som påminner oss om dig.</p>
+    <p class="section-label">Soundtracks</p>
+    <p
+      style="font-family: var(--font-serif); font-style: italic; color: var(--muted); font-size: 1rem; margin-top: -1.2rem; margin-bottom: 1.5rem;">
+      Låtar som påminner oss om dig.</p>
     <p class="memory-empty" id="soundtrackEmpty" style="display:none;">Inga låtar ännu.</p>
     <div id="soundtrackList" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
     <div class="photo-pagination" id="songPagination" style="display:none;">
@@ -111,7 +113,9 @@
   <!-- Text-only messages -->
   <section class="section" id="messagesSection">
     <p class="section-label">Meddelanden</p>
-    <p style="font-family: var(--font-serif); font-style: italic; color: var(--muted); font-size: 1rem; margin-top: -1.2rem; margin-bottom: 1.5rem;">Hälsningar från fanclubben.</p>
+    <p
+      style="font-family: var(--font-serif); font-style: italic; color: var(--muted); font-size: 1rem; margin-top: -1.2rem; margin-bottom: 1.5rem;">
+      Hälsningar från fanclubben.</p>
     <div class="messages-list" id="messagesList">
       <p class="memory-empty" id="messagesEmpty">Inga meddelanden ännu.</p>
     </div>
@@ -623,7 +627,7 @@
       document.getElementById('memoryGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    window.renderMsgPage = function(page) {
+    window.renderMsgPage = function (page) {
       const cards = window._msgCards;
       const perPage = 6;
       const totalPages = Math.ceil(cards.length / perPage);
@@ -643,14 +647,14 @@
       document.getElementById('msgNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
     }
 
-    window.changeMsgPage = function(dir) {
+    window.changeMsgPage = function (dir) {
       const totalPages = Math.ceil(window._msgCards.length / 6);
       window._msgPage = Math.max(0, Math.min(window._msgPage + dir, totalPages - 1));
       window.renderMsgPage(window._msgPage);
       document.getElementById('messagesList').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    window.renderSongPage = function(page) {
+    window.renderSongPage = function (page) {
       const cards = window._songCards;
       const perPage = 4;
       const totalPages = Math.ceil(cards.length / perPage);
@@ -670,7 +674,7 @@
       document.getElementById('songNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
     }
 
-    window.changeSongPage = function(dir) {
+    window.changeSongPage = function (dir) {
       const totalPages = Math.ceil(window._songCards.length / 4);
       window._songPage = Math.max(0, Math.min(window._songPage + dir, totalPages - 1));
       window.renderSongPage(window._songPage);
