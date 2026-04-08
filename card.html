@@ -38,7 +38,7 @@
 
   <!-- Opening -->
   <section class="opening-section">
-    <p class="date-label">09.04.2026</p>
+    <p class="date-label">09 . 04</p>
     <h1 class="opening-title">Grattis<br />Pappa</h1>
     <p class="opening-subtitle">Ett år äldre &nbsp;·&nbsp; Aldrig tråkigare</p>
     <p class="scroll-hint">Scroll</p>
@@ -125,17 +125,17 @@
   </section>
 
   <!-- Music player -->
-  <div class="music-player" id="musicPlayer" style="display:none;"></div>
-  <audio id="audioPlayer" src="music.mp3" loop></audio>
-  <div class="music-info">
-    <span class="music-title">Heaven Is a Place on Earth</span>
-    <span class="music-artist">Belinda Carlisle</span>
-  </div>
-  <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">❚❚</button>
-  <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1"
-    oninput="document.getElementById('audioPlayer').volume = this.value" />
-  <button class="music-close"
-    onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
+  <div class="music-player" id="musicPlayer" style="display:none;">
+    <audio id="audioPlayer" src="music.mp3" loop></audio>
+    <div class="music-info">
+      <span class="music-title">Heaven Is a Place on Earth</span>
+      <span class="music-artist">Belinda Carlisle</span>
+    </div>
+    <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">❚❚</button>
+    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1"
+      oninput="document.getElementById('audioPlayer').volume = this.value" />
+    <button class="music-close"
+      onclick="document.getElementById('musicPlayer').style.display='none'; document.getElementById('audioPlayer').pause();">✕</button>
   </div>
 
   <script>
