@@ -406,6 +406,20 @@ html, body {
   opacity: 1;
 }
 
+.speedo-tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  opacity: 0;
+  transition: opacity 1s ease 0.3s;
+}
+
+.speedo-tagline.visible {
+  opacity: 1;
+}
+
 /* Flash overlay — small round burst */
 .speedometer-section {
   position: relative;

@@ -57,6 +57,7 @@
       </div>
       <div class="speedo-text" id="speedoText">
         <p class="speedo-msg" id="speedoMsg"></p>
+        <p class="speedo-tagline" id="speedoTagline">45 år — dags att sakta ner? Aldrig.</p>
       </div>
     </div>
   </section>
@@ -340,6 +341,7 @@
             const msg = document.getElementById('speedoMsg');
             msg.textContent = 'SLOW DOWN!';
             msg.classList.add('visible');
+            document.getElementById('speedoTagline').classList.add('visible');
           }, 600);
           // Start settling after flash
           setTimeout(() => { phase = 'settling'; settleStart = Date.now(); }, 500);
