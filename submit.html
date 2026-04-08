@@ -55,6 +55,7 @@
             <button type="button" class="prompt-chip" onclick="usePrompt(this)">Where should he go on his next adventure?</button>
           </div>
         </div>
+        <p id="activePrompt" style="display:none; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--amber); margin:0.4rem 0 0.2rem;"></p>
         <textarea id="messageInput" rows="5" placeholder="Tell us something..." required maxlength="800"></textarea>
       </div>
 
@@ -179,10 +180,12 @@
 
     function usePrompt(btn) {
       const textarea = document.getElementById('messageInput');
-      textarea.value = btn.textContent;
+      const activePrompt = document.getElementById('activePrompt');
+      activePrompt.textContent = btn.textContent;
+      activePrompt.style.display = 'block';
+      textarea.value = '';
+      textarea.placeholder = 'Write your answer here...';
       textarea.focus();
-      // Move cursor to end
-      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
     }
   </script>
 
