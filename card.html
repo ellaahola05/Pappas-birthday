@@ -624,7 +624,7 @@
 
     window.renderMsgPage = function(page) {
       const cards = window._msgCards;
-      const perPage = 4;
+      const perPage = 6;
       const totalPages = Math.ceil(cards.length / perPage);
       const list = document.getElementById('messagesList');
       const pagination = document.getElementById('msgPagination');
@@ -643,7 +643,7 @@
     }
 
     window.changeMsgPage = function(dir) {
-      const totalPages = Math.ceil(window._msgCards.length / 4);
+      const totalPages = Math.ceil(window._msgCards.length / 6);
       window._msgPage = Math.max(0, Math.min(window._msgPage + dir, totalPages - 1));
       window.renderMsgPage(window._msgPage);
       document.getElementById('messagesList').scrollIntoView({ behavior: 'smooth', block: 'start' });

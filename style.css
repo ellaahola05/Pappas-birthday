@@ -1000,9 +1000,11 @@ html, body {
 
 /* ─── Messages (text-only submissions) ──────────────────── */
 .messages-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2.5rem 2rem;
+  margin-top: 2rem;
+  align-items: start;
 }
 
 .message-card {
@@ -1015,6 +1017,7 @@ html, body {
   gap: 0.55rem;
   border-radius: 3px;
   position: relative;
+  min-height: 200px;
 }
 
 .message-card::before {
@@ -1110,7 +1113,8 @@ html, body {
 
 /* Mobile tweaks */
 @media (max-width: 600px) {
-  .memory-grid {
+  .memory-grid,
+  .messages-list {
     grid-template-columns: 1fr;
   }
 
