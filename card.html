@@ -479,6 +479,7 @@
               <img src="${data.photoUrl}" alt="Minne av ${data.name}" loading="lazy" />
               <div class="polaroid-caption">
                 <p class="memory-author">${data.name}</p>
+                ${data.prompt ? `<p class="memory-prompt">${data.prompt}</p>` : ''}
                 <p class="memory-text">${data.message}</p>
               </div>
             `;
@@ -494,6 +495,7 @@
             msg.className = 'message-card';
             msg.innerHTML = `
               <p class="memory-author">${data.name}</p>
+              ${data.prompt ? `<p class="memory-prompt">${data.prompt}</p>` : ''}
               <p class="memory-text">${data.message}</p>
             `;
             messagesList.appendChild(msg);

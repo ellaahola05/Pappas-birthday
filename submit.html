@@ -311,6 +311,7 @@
 
       const name = document.getElementById('nameInput').value.trim();
       const message = document.getElementById('messageInput').value.trim();
+      const prompt = document.getElementById('activePromptText').textContent.trim() || null;
       const photoFile = document.getElementById('photoInput').files[0];
       const spotifyRaw = document.getElementById('spotifyInput').value.trim();
       const spotifyError = document.getElementById('spotifyError');
@@ -336,7 +337,7 @@
         if (photoFile) photoUrl = await uploadToCloudinary(photoFile);
 
         await addDoc(collection(db, 'memories'), {
-          name, message, photoUrl, spotifyUrl,
+          name, message, prompt, photoUrl, spotifyUrl,
           timestamp: serverTimestamp()
         });
 
