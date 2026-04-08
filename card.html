@@ -98,6 +98,11 @@
     <p class="section-label">Soundtrack</p>
     <p class="memory-empty" id="soundtrackEmpty" style="display:none;">Inga låtar ännu.</p>
     <div id="soundtrackList" style="display:flex; flex-direction:column; gap:0.75rem;"></div>
+    <div class="photo-pagination" id="songPagination" style="display:none;">
+      <button class="page-arrow" id="songPrev" onclick="changeSongPage(-1)">&#8592;</button>
+      <span class="page-indicator" id="songIndicator"></span>
+      <button class="page-arrow" id="songNext" onclick="changeSongPage(1)">&#8594;</button>
+    </div>
   </section>
 
   <div class="divider"></div>
@@ -107,6 +112,11 @@
     <p class="section-label">Meddelanden</p>
     <div class="messages-list" id="messagesList">
       <p class="memory-empty" id="messagesEmpty">Inga meddelanden ännu.</p>
+    </div>
+    <div class="photo-pagination" id="msgPagination" style="display:none;">
+      <button class="page-arrow" id="msgPrev" onclick="changeMsgPage(-1)">&#8592;</button>
+      <span class="page-indicator" id="msgIndicator"></span>
+      <button class="page-arrow" id="msgNext" onclick="changeMsgPage(1)">&#8594;</button>
     </div>
   </section>
 
@@ -490,6 +500,8 @@
         let songCount = 0;
 
         const allPhotoCards = [];
+        const allMsgCards = [];
+        const allSongCards = [];
 
         snapshot.forEach(doc => {
           const data = doc.data();
@@ -522,7 +534,7 @@
               ${data.prompt ? `<p class="memory-prompt" style="color:#7a9a80; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase;">${data.prompt}</p>` : ''}
               <p class="memory-text" style="color:#f0ece4; font-size:0.78rem; line-height:1.55;">${data.message}</p>
             `;
-            messagesList.appendChild(msg);
+            allMsgCards.push(msg);
           }
 
           // Soundtrack entry
@@ -539,7 +551,7 @@
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy" style="border-radius:10px;"></iframe>
               `;
-              soundtrackList.appendChild(wrapper);
+              allSongCards.push(wrapper);
             }
           }
         });
@@ -552,9 +564,22 @@
           window.renderPhotoPage(0);
         }
 
-        if (msgCount === 0) messagesEmpty.style.display = 'block';
-        else messagesEmpty.style.display = 'none';
-        if (songCount === 0) soundtrackEmpty.style.display = 'block';
+        if (allMsgCards.length === 0) {
+          messagesEmpty.style.display = 'block';
+        } else {
+          messagesEmpty.style.display = 'none';
+          window._msgCards = allMsgCards;
+          window._msgPage = 0;
+          window.renderMsgPage(0);
+        }
+
+        if (allSongCards.length === 0) {
+          soundtrackEmpty.style.display = 'block';
+        } else {
+          window._songCards = allSongCards;
+          window._songPage = 0;
+          window.renderSongPage(0);
+        }
 
       } catch (err) {
         console.error('Could not load memories:', err);
@@ -591,8 +616,66 @@
       const cards = window._photoCards;
       const totalPages = Math.ceil(cards.length / 6);
       window._photoPage = Math.max(0, Math.min(window._photoPage + dir, totalPages - 1));
-      renderPhotoPage(window._photoPage);
+      window.renderPhotoPage(window._photoPage);
       document.getElementById('memoryGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.renderMsgPage = function(page) {
+      const cards = window._msgCards;
+      const perPage = 6;
+      const totalPages = Math.ceil(cards.length / perPage);
+      const list = document.getElementById('messagesList');
+      const pagination = document.getElementById('msgPagination');
+      const indicator = document.getElementById('msgIndicator');
+
+      list.innerHTML = '';
+      const start = page * perPage;
+      for (let i = start; i < Math.min(start + perPage, cards.length); i++) {
+        list.appendChild(cards[i]);
+      }
+
+      if (totalPages > 1) {
+        pagination.style.display = 'flex';
+        indicator.textContent = `${page + 1} / ${totalPages}`;
+        document.getElementById('msgPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
+        document.getElementById('msgNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
+      }
+    }
+
+    window.changeMsgPage = function(dir) {
+      const totalPages = Math.ceil(window._msgCards.length / 6);
+      window._msgPage = Math.max(0, Math.min(window._msgPage + dir, totalPages - 1));
+      window.renderMsgPage(window._msgPage);
+      document.getElementById('messagesList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.renderSongPage = function(page) {
+      const cards = window._songCards;
+      const perPage = 6;
+      const totalPages = Math.ceil(cards.length / perPage);
+      const list = document.getElementById('soundtrackList');
+      const pagination = document.getElementById('songPagination');
+      const indicator = document.getElementById('songIndicator');
+
+      list.innerHTML = '';
+      const start = page * perPage;
+      for (let i = start; i < Math.min(start + perPage, cards.length); i++) {
+        list.appendChild(cards[i]);
+      }
+
+      if (totalPages > 1) {
+        pagination.style.display = 'flex';
+        indicator.textContent = `${page + 1} / ${totalPages}`;
+        document.getElementById('songPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
+        document.getElementById('songNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
+      }
+    }
+
+    window.changeSongPage = function(dir) {
+      const totalPages = Math.ceil(window._songCards.length / 6);
+      window._songPage = Math.max(0, Math.min(window._songPage + dir, totalPages - 1));
+      window.renderSongPage(window._songPage);
+      document.getElementById('soundtrackList').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   </script>
 
