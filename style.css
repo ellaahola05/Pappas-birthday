@@ -992,11 +992,25 @@ html, body {
 }
 
 .message-card {
-  border-left: 2px solid var(--border);
-  padding: 0.75rem 1.25rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 1.1rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  border-radius: 2px;
+}
+
+.message-card .memory-author {
+  color: var(--amber);
+}
+
+.message-card .memory-text {
+  color: var(--cream);
+}
+
+.message-card .memory-prompt {
+  color: var(--muted);
 }
 
 /* ─── Soundtrack ─────────────────────────────────────────── */
