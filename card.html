@@ -106,6 +106,16 @@
 
   <div class="divider"></div>
 
+  <!-- Family slideshow -->
+  <section class="section" id="familySection">
+    <p class="section-label">Familjen</p>
+    <div class="family-slideshow">
+      <img id="familyPhoto" src="" alt="Familjefoto" />
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- Footer -->
   <section class="section" style="text-align: center; padding-bottom: 6rem;">
     <p class="date-label" style="margin-bottom: 1.5rem;">09 . 04</p>
@@ -534,6 +544,32 @@
     }
 
     loadMemories();
+  </script>
+
+  <!-- Family slideshow -->
+  <script>
+    const familyPhotos = [
+      'family/1.jpg',
+      'family/2.jpg',
+      'family/3.jpg',
+    ];
+
+    let familyIndex = 0;
+    const familyImg = document.getElementById('familyPhoto');
+
+    function showFamilyPhoto(index) {
+      familyImg.style.opacity = '0';
+      setTimeout(() => {
+        familyImg.src = familyPhotos[index];
+        familyImg.style.opacity = '1';
+      }, 600);
+    }
+
+    showFamilyPhoto(familyIndex);
+    setInterval(() => {
+      familyIndex = (familyIndex + 1) % familyPhotos.length;
+      showFamilyPhoto(familyIndex);
+    }, 10000);
   </script>
 
 </body>
