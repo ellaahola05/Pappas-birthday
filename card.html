@@ -84,6 +84,11 @@
     <div class="memory-grid" id="memoryGrid">
       <p class="memory-empty">Laddar minnen...</p>
     </div>
+    <div class="photo-pagination" id="photoPagination" style="display:none;">
+      <button class="page-arrow" id="photoPrev" onclick="changePhotoPage(-1)">&#8592;</button>
+      <span class="page-indicator" id="pageIndicator"></span>
+      <button class="page-arrow" id="photoNext" onclick="changePhotoPage(1)">&#8594;</button>
+    </div>
   </section>
 
   <div class="divider"></div>
@@ -484,13 +489,13 @@
         let msgCount = 0;
         let songCount = 0;
 
+        const allPhotoCards = [];
+
         snapshot.forEach(doc => {
           const data = doc.data();
-          console.log('Memory data:', data.name, '| prompt:', data.prompt);
 
           if (data.photoUrl) {
             // Has photo → Minnen (polaroid grid)
-            photoCount++;
             const card = document.createElement('div');
             card.className = 'memory-card';
             card.innerHTML = `
@@ -505,7 +510,7 @@
             card.addEventListener('click', () => {
               openLightbox(data.photoUrl, data.name, data.message);
             });
-            grid.appendChild(card);
+            allPhotoCards.push(card);
           } else {
             // Text only → Meddelanden
             msgCount++;
@@ -539,7 +544,14 @@
           }
         });
 
-        if (photoCount === 0) grid.innerHTML = '<p class="memory-empty">Inga bilder ännu.</p>';
+        if (allPhotoCards.length === 0) {
+          grid.innerHTML = '<p class="memory-empty">Inga bilder ännu.</p>';
+        } else {
+          window._photoCards = allPhotoCards;
+          window._photoPage = 0;
+          renderPhotoPage(0);
+        }
+
         if (msgCount === 0) messagesEmpty.style.display = 'block';
         else messagesEmpty.style.display = 'none';
         if (songCount === 0) soundtrackEmpty.style.display = 'block';
@@ -551,6 +563,37 @@
     }
 
     loadMemories();
+
+    function renderPhotoPage(page) {
+      const cards = window._photoCards;
+      const perPage = 6;
+      const totalPages = Math.ceil(cards.length / perPage);
+      const grid = document.getElementById('memoryGrid');
+      const pagination = document.getElementById('photoPagination');
+      const indicator = document.getElementById('pageIndicator');
+
+      grid.innerHTML = '';
+      const start = page * perPage;
+      const end = Math.min(start + perPage, cards.length);
+      for (let i = start; i < end; i++) {
+        grid.appendChild(cards[i]);
+      }
+
+      if (totalPages > 1) {
+        pagination.style.display = 'flex';
+        indicator.textContent = `${page + 1} / ${totalPages}`;
+        document.getElementById('photoPrev').style.visibility = page === 0 ? 'hidden' : 'visible';
+        document.getElementById('photoNext').style.visibility = page === totalPages - 1 ? 'hidden' : 'visible';
+      }
+    }
+
+    function changePhotoPage(dir) {
+      const cards = window._photoCards;
+      const totalPages = Math.ceil(cards.length / 6);
+      window._photoPage = Math.max(0, Math.min(window._photoPage + dir, totalPages - 1));
+      renderPhotoPage(window._photoPage);
+      document.getElementById('memoryGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   </script>
 
   <!-- Family slideshow -->

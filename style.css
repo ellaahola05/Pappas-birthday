@@ -1027,6 +1027,40 @@ html, body {
   color: var(--muted);
 }
 
+/* ─── Photo Pagination ───────────────────────────────────── */
+.photo-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.page-arrow {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 1.1rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+
+.page-arrow:hover {
+  color: var(--cream);
+  border-color: var(--amber);
+}
+
+.page-indicator {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
 /* ─── Family Slideshow ───────────────────────────────────── */
 .family-slideshow {
   width: 100%;
